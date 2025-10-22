@@ -20,7 +20,7 @@ export const useUsersStore = defineStore('users',  {
             phone: 253739874638,
             deliveryAddress: '123 , Madaraka',
             password:'RX blue',
-            userType: 'Customer',
+            userType: 'Farmer',
             activeAccount: true
         },
         2:{
@@ -29,7 +29,7 @@ export const useUsersStore = defineStore('users',  {
             phone: 283732274671,
             deliveryAddress: '123 , Madaraka',
             password:'Dark-elk',
-            userType: 'Customer',
+            userType: 'Farmer',
             activeAccount: true
         },
         3:{
@@ -39,9 +39,18 @@ export const useUsersStore = defineStore('users',  {
             deliveryAddress: '123 , Madaraka',
             password: 'ohio',
             userType: 'Customer',
-            activeAccount: false
+            activeAccount: true
         },
         4:{
+            name:'Vulcan Beckharm',
+            email:'vulcan@example.com',
+            phone: 255731874688,
+            deliveryAddress: '128 , Madaraka',
+            password: 'vulcan DB',
+            userType: 'Customer',
+            activeAccount: false
+        },
+        5:{
             name:'Marcus Doe',
             email:'marcus@example.com',
             phone: 252731874677,

@@ -223,7 +223,7 @@ function close(){
                         <v-row>
                                 Add User
                                 <v-spacer></v-spacer>
-                                <v-btn class="ma-2" color="blue-darken-2" icon="mdi-close" @click="close();"></v-btn>
+                                <v-btn class="ma-2" color="purple" icon="mdi-close" @click="close();"></v-btn>
                             </v-row>
                         </v-card-title>
                         <v-card-text>
@@ -258,6 +258,9 @@ function close(){
                                             </v-col>
                                             <v-col cols="12" md="6" sm="6" >
                                                 <v-radio label="Customer" value="3"></v-radio>
+                                            </v-col>
+                                            <v-col cols="12" md="6" sm="6" >
+                                                <v-radio label="farmer" value="3"></v-radio>
                                             </v-col>
                                         </v-row>
                                     </v-radio-group>
@@ -313,12 +316,24 @@ function close(){
                             <v-radio-group v-model="category">
                                 <v-row>
                                     <v-col cols="12" md="6" sm="6" >
-                                        <v-radio label="Food" value="2"></v-radio>
+                                        <v-radio label="Logistics" value="2"></v-radio>
                                     </v-col>
                                     <v-col cols="12" md="6" sm="6" >
-                                        <v-radio label="Drink" value="3"></v-radio>
+                                        <v-radio label="Agronomy" value="3"></v-radio>
                                     </v-col>
-                                </v-row>
+                                  </v-row>
+                                  <v-col cols="12" md="6" sm="6" >
+                                        <v-radio label="Infrastructure" value="2"></v-radio>
+                                    </v-col>
+                                    <v-col cols="12" md="6" sm="6" >
+                                        <v-radio label="Machinery" value="2"></v-radio>
+                                    </v-col>
+                                    <v-col cols="12" md="6" sm="6" >
+                                        <v-radio label="Education" value="2"></v-radio>
+                                      </v-col>
+                                    <v-col cols="12" md="6" sm="6" >
+                                        <v-radio label="Temporary structures" value="2"></v-radio>
+                                    </v-col>
                                 <v-row dense>
                                 <v-col >
                                     <v-file-input label="Image" prepend-icon="mdi-camera" v-model="image" ></v-file-input>

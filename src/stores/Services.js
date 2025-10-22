@@ -50,7 +50,7 @@ export const useServicesStore = defineStore('services', {
         price: 12500,
         description: 'Complete greenhouse construction and crop management services.',
         longDescription:'We design, build, and maintain high-quality greenhouses that enhance your farm’s productivity throughout the year. Our team ensures optimal irrigation, ventilation, and temperature control systems. We also provide guidance on ideal crops for your region and soil type.',
-        category: 'Infrastructure',
+        category: 'Temporary structures',
       },
     }
 
