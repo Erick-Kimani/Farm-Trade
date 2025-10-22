@@ -17,28 +17,23 @@ const viewingFAQ = ref(true); // true when viewing common FAQs
 const commonQueries = [
   {
     question: "How can I place an order?",
-    answer:
-      "To place an order, go to the Products section, select your desired item, and click 'Order Now'. You can then confirm your purchase easily.",
+    answer:"To place an order, go to the Products section, select your desired item, and click 'Order Now'. You can then confirm your purchase easily.",
   },
   {
     question: "Do you deliver produce?",
-    answer:
-      "Yes! We deliver across major towns in Kenya. Delivery charges depend on your location and order size.",
+    answer:"Yes! We deliver across major towns in Kenya. Delivery charges depend on your location and order size.",
   },
   {
     question: "Can I sell my farm produce on FarmTrade Hub?",
-    answer:
-      "Absolutely. Simply sign up as a farmer, create your product listings, and start selling directly to customers.",
+    answer:"Absolutely. Simply sign up as a farmer, create your product listings, and start selling directly to customers.",
   },
   {
     question: "How do I contact customer support?",
-    answer:
-      "You can reach us through WhatsApp (+254 791 018 109) or email us at farmtradehub@gmail.com.",
+    answer:"You can reach us through WhatsApp (+254 791 018 109) or email us at farmtradehub@gmail.com.",
   },
   {
     question: "What payment methods do you accept?",
-    answer:
-      "We accept M-Pesa, bank transfers, and selected mobile wallets for your convenience.",
+    answer:"We accept M-Pesa, bank transfers, and selected mobile wallets for your convenience.",
   },
 ];
 
