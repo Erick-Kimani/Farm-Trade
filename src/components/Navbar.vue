@@ -57,7 +57,6 @@ function logout() {
         <v-btn text class="text-white" @click="goTo('/')">Home</v-btn>
         <v-btn text class="text-white" @click="goTo('/services')">Services</v-btn>
         <v-btn text class="text-white" @click="goTo('/aboutus')">AboutUs</v-btn>
-        <v-btn text class="text-white" @click="goTo('/contact')">Contact</v-btn>
         <v-btn text class="text-white" @click="goTo('/products')">Products</v-btn>
         <v-btn v-if="isLoggedIn" text class="text-white" @click="goTo('/orders')"> My Order </v-btn>
         <v-btn v-if="isLoggedIn && isAdmin"textclass="text-white"@click="goTo('/admin')">Admin</v-btn>

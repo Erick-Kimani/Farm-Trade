@@ -1,356 +1,222 @@
+<template>
+  <v-app>
+    <v-navigation-drawer
+      v-model="drawer"
+      :rail="rail"
+      permanent
+      @click="rail = false"
+    >
+      <v-list>
+        <v-list-item
+          prepend-avatar="https://randomuser.me/api/portraits/men/85.jpg"
+          title="John Leider"
+        >
+          <template #append>
+            <v-btn
+              icon="mdi-chevron-left"
+              variant="text"
+              @click.stop="rail = !rail"
+            ></v-btn>
+          </template>
+        </v-list-item>
+      </v-list>
+
+      <v-divider></v-divider>
+
+      <v-list density="compact" nav>
+        <v-list-item
+          prepend-icon="mdi-home-city"
+          title="Home"
+          value="home"
+        ></v-list-item>
+        <v-list-item
+          prepend-icon="mdi-account"
+          title="My Account"
+          value="account"
+        ></v-list-item>
+        <v-list-item
+          prepend-icon="mdi-account-group-outline"
+          title="Users"
+          value="users"
+        ></v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+
+    <!-- Main Admin Page -->
+    <v-main class="pa-6">
+      <v-container fluid>
+        <v-sheet border rounded>
+          <v-data-table
+            :headers="headers"
+            :hide-default-footer="books.length < 11"
+            :items="books"
+          >
+            <template #top>
+              <v-toolbar flat>
+                <v-toolbar-title>
+                  <v-icon color="medium-emphasis" icon="mdi-book-multiple" size="x-small" start />
+                  Popular books
+                </v-toolbar-title>
+
+                <v-spacer></v-spacer>
+
+                <v-btn
+                  class="me-2"
+                  prepend-icon="mdi-plus"
+                  rounded="lg"
+                  text="Add a Book"
+                  border
+                  @click="add"
+                ></v-btn>
+              </v-toolbar>
+            </template>
+
+            <template #item.title="{ value }">
+              <v-chip :text="value" border="thin opacity-25" prepend-icon="mdi-book" label></v-chip>
+            </template>
+
+            <template #item.actions="{ item }">
+              <div class="d-flex ga-2 justify-end">
+                <v-icon color="medium-emphasis" icon="mdi-pencil" size="small" @click="edit(item.id)" />
+                <v-icon color="medium-emphasis" icon="mdi-delete" size="small" @click="remove(item.id)" />
+              </div>
+            </template>
+
+            <template #no-data>
+              <v-btn
+                prepend-icon="mdi-backup-restore"
+                rounded="lg"
+                text="Reset data"
+                variant="text"
+                border
+                @click="reset"
+              ></v-btn>
+            </template>
+          </v-data-table>
+        </v-sheet>
+      </v-container>
+
+      <!-- Dialog -->
+      <v-dialog v-model="dialog" max-width="500">
+        <v-card
+          :subtitle="`${isEditing ? 'Update' : 'Create'} your favorite book`"
+          :title="`${isEditing ? 'Edit' : 'Add'} a Book`"
+        >
+          <template #text>
+            <v-row>
+              <v-col cols="12">
+                <v-text-field v-model="formModel.title" label="Title"></v-text-field>
+              </v-col>
+
+              <v-col cols="12" md="6">
+                <v-text-field v-model="formModel.author" label="Author"></v-text-field>
+              </v-col>
+
+              <v-col cols="12" md="6">
+                <v-select
+                  v-model="formModel.genre"
+                  :items="['Fiction', 'Dystopian', 'Non-Fiction', 'Sci-Fi']"
+                  label="Genre"
+                ></v-select>
+              </v-col>
+
+              <v-col cols="12" md="6">
+                <v-number-input
+                  v-model="formModel.year"
+                  :max="currentYear"
+                  :min="1"
+                  label="Year"
+                ></v-number-input>
+              </v-col>
+
+              <v-col cols="12" md="6">
+                <v-number-input v-model="formModel.pages" :min="1" label="Pages"></v-number-input>
+              </v-col>
+            </v-row>
+          </template>
+
+          <v-divider></v-divider>
+
+          <v-card-actions class="bg-surface-light">
+            <v-btn text="Cancel" variant="plain" @click="dialog = false"></v-btn>
+            <v-spacer></v-spacer>
+            <v-btn text="Save" @click="save"></v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-main>
+  </v-app>
+</template>
+
 <script setup>
-import { ref } from 'vue';
-import { useUsersStore } from '../stores/users'
-import { useServicesStore } from '../stores/Services'
+import { ref, shallowRef, onMounted, toRef } from 'vue'
 
+const drawer = ref(true)
+const rail = ref(false)
+const currentYear = new Date().getFullYear()
 
-const usersStore = useUsersStore()
-const ServicesStore = useServicesStore()
-
-
-const tab = ref(null)
-const users = usersStore.users
-const services = ServicesStore.services
-
-
-const showAddUserDialog =ref (false)
-const showAddServicesDialog = ref (false)
-
-
-const showEditUserDialog = ref (false)
-const showEditServicesDialog = ref (false)
-
-
-//models
-// ----user models---
-const userName = ref(null)
-const email = ref(null)
-const phone = ref(null)
-const deliveryAddress = ref(null)
-const userType = ref(null)
-
-// ----services models---
-
-const servicesName = ref(null)
-const price = ref(null)
-const image =ref(null)
-const description = ref(null)
-const  longDescription = ref(null)
-const category = ref(null)
-
-
-
-
-
-//functions
-//----users----
-//add user
-
-// edit user
-
-// activate user
-// deactivate user
-// change password
-
-
-//----services----
-//add services
-
-// edit services
-
-// delete services
-
-
-
-function close(){
-    showAddUserDialog.value = false
-    showAddServicesDialog.value=false
-  
-
-    name.value = null
-    email.value = null
-    phone.value = null
-    deliveryAddress.value = null
-    userType.value = null
-
-
-   servicesName.value=null
-   price.value = ref(null)
-   image.value =ref(null)
-   description.value= ref(null)
-   longdescription.value = ref(null)
-   category.value = ref(null)
-
-   
-    
-
-
+function createNewRecord() {
+  return {
+    title: '',
+    author: '',
+    genre: '',
+    year: currentYear,
+    pages: 1,
+  }
 }
 
+const books = ref([])
+const formModel = ref(createNewRecord())
+const dialog = shallowRef(false)
+const isEditing = toRef(() => !!formModel.value.id)
+
+const headers = [
+  { title: 'Title', key: 'title', align: 'start' },
+  { title: 'Author', key: 'author' },
+  { title: 'Genre', key: 'genre' },
+  { title: 'Year', key: 'year', align: 'end' },
+  { title: 'Pages', key: 'pages', align: 'end' },
+  { title: 'Actions', key: 'actions', align: 'end', sortable: false },
+]
+
+onMounted(() => reset())
+
+function add() {
+  formModel.value = createNewRecord()
+  dialog.value = true
+}
+
+function edit(id) {
+  const found = books.value.find(book => book.id === id)
+  formModel.value = { ...found }
+  dialog.value = true
+}
+
+function remove(id) {
+  const index = books.value.findIndex(book => book.id === id)
+  books.value.splice(index, 1)
+}
+
+function save() {
+  if (isEditing.value) {
+    const index = books.value.findIndex(book => book.id === formModel.value.id)
+    books.value[index] = { ...formModel.value }
+  } else {
+    formModel.value.id = books.value.length + 1
+    books.value.push({ ...formModel.value })
+  }
+  dialog.value = false
+}
+
+function reset() {
+  dialog.value = false
+  formModel.value = createNewRecord()
+  books.value = [
+    { id: 1, title: 'To Kill a Mockingbird', author: 'Harper Lee', genre: 'Fiction', year: 1960, pages: 281 },
+    { id: 2, title: '1984', author: 'George Orwell', genre: 'Dystopian', year: 1949, pages: 328 },
+    { id: 3, title: 'The Great Gatsby', author: 'F. Scott Fitzgerald', genre: 'Fiction', year: 1925, pages: 180 },
+    { id: 4, title: 'Sapiens', author: 'Yuval Noah Harari', genre: 'Non-Fiction', year: 2011, pages: 443 },
+    { id: 5, title: 'Dune', author: 'Frank Herbert', genre: 'Sci-Fi', year: 1965, pages: 412 },
+  ]
+}
 </script>
-
-<template>
-    <v-container>
-        <v-card>
-            <v-tabs v-model="tab" align-tabs="center" color="primary" >
-                <v-tab :value="1">Users</v-tab>
-                <v-tab :value="2">Services</v-tab>
-                <v-tab :value="3">Products</v-tab>
-            </v-tabs>
-            <v-tabs-window v-model="tab">
-                <!-- Users -->
-                <v-tabs-window-item :value="1">
-                    <div v-if="users == null||users==undefined||Object.keys(users).length == 0" align="center">
-                        <v-row>
-                            <v-col cols="12" md="6" sm="12" >
-                                <div class="text-h6">No users found</div>
-                            </v-col>
-                            
-                        </v-row>
-                    </div>
-                    <div v-else>
-                        <v-container>
-                            <v-row class="ma-2">
-                                <v-col cols="12" md="6" sm="12" >
-                                <v-btn class="ma-2" color="blue-darken-2" icon="mdi-plus" @click="showAddUserDialog = true"></v-btn>
-                                </v-col>
-                                <v-col>
-                                    <v-table class="border">
-                                        <thead>
-                                            <tr>
-                                                <th class="text-left"> Name </th>
-                                                <th class="text-left"> Email </th>
-                                                <th class="text-left"> Phone </th>
-                                                <th class="text-left"> Delivery Address </th>
-                                                <th class="text-left"> Role </th>
-                                                <th class="text-center" colspan="3"> Action </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr v-for="item in users" :key="item.id" >
-                                                <td>{{ item.name }}</td>
-                                                <td>{{ item.email }}</td>
-                                                <td>{{ item.phone }}</td>
-                                                <td>{{ item.deliveryAddress }}</td>
-                                                <td>{{ item.userType }}</td>
-                                                <td v-if="item.activeAccount== true">
-                                                    <v-btn color="success" size="small" @click="changePassword(item)"><v-icon icon="mdi-key" ></v-icon> Reset Password</v-btn>
-                                                </td>
-                                                <td v-if="item.activeAccount== true">
-                                                    <v-btn color="primary" size="small" @click="editUser(item)"><v-icon icon="mdi-pencil" ></v-icon> Edit</v-btn>
-                                                </td>
-                                                <td v-if="item.activeAccount== true">
-                                                        <v-btn color="error" size="small" @click="deactivate(item)"><v-icon icon="mdi-account-cancel" ></v-icon> Deactivate</v-btn>
-                                                </td>
-                                                <td colspan="3" v-if="item.activeAccount !== true" align="center">
-                                                    <v-btn color="warning" size="small" @click="activate(item)"><v-icon icon="mdi-account-check" ></v-icon> Activate</v-btn>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </v-table>
-                                </v-col>
-                            </v-row>
-                        </v-container>
-                    </div>
-                </v-tabs-window-item>
-
-                <!--Services-->
-        <v-tabs-window-item :value="2">
-                    <div v-if="services== null||services==undefined||Object.keys(users).length == 0" align="center">
-                        <v-row>
-                            <v-col cols="12" md="6" sm="12" >
-                                <div class="text-h6">No users found</div>
-                            </v-col>
-                            
-                        </v-row>
-                    </div>
-                    <div v-else>
-                        <v-container>
-                            <v-row class="ma-2">
-                                <v-col cols="12" md="6" sm="12" >
-                                <v-btn class="ma-2" color="blue-darken-2" icon="mdi-plus" @click="showAddServicesDialog = true"></v-btn>
-                                </v-col>
-                                <v-col>
-                                    <v-table class="border">
-                                        <thead>
-                                            <tr>
-                                                <th class="text-left"> Name </th>
-                                                <th class="text-left"> Price</th>
-                                                <th class="text-left"> Description</th>
-                                                <th class="text-left"> Category </th>
-                                                <th class="text-center" colspan="2"> Action </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr v-for="item in services" :key="item.id" >
-                                                <td>{{ item.name }}</td>
-                                                <td>{{ item.price }}</td>
-                                                <td>{{ item.description }}</td>
-                                                <td>{{ item.category }}</td>
-                                                
-                                                
-                                                <td>
-                                                    <v-btn color="primary" size="small" @click="editUser(item)"><v-icon icon="mdi-pencil" ></v-icon> Edit</v-btn>
-                                                </td>
-                                                <td> 
-                                                        <v-btn color="error" size="small" @click="deactivate(item)"><v-icon icon="mdi-account-cancel" ></v-icon> Deactivate</v-btn>
-                                                </td>
-                                                <td colspan="3" v-if="item.activeAccount !== true" align="center">
-                                                    <v-btn color="warning" size="small" @click="activate(item)"><v-icon icon="mdi-account-check" ></v-icon> Activate</v-btn>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </v-table>
-                                </v-col>
-                            </v-row>
-                        </v-container>
-                    </div>
-                </v-tabs-window-item>
-
-            </v-tabs-window>
-        </v-card>
-    </v-container>  
-
-    <!-- Dialogs -->
-
-    <!-- Users -->
-    <!-- Add user -->
-     
-        <v-dialog v-model="showAddUserDialog" max-width="600">
-                <v-form @submit.prevent >
-                    <v-card>
-                        <v-card-title class="pa-6">
-                        <v-row>
-                                Add User
-                                <v-spacer></v-spacer>
-                                <v-btn class="ma-2" color="purple" icon="mdi-close" @click="close();"></v-btn>
-                            </v-row>
-                        </v-card-title>
-                        <v-card-text>
-                            <v-row dense>
-                                <v-col >
-                                    <v-text-field label="Name" v-model="userName"></v-text-field>
-                                </v-col>
-                            </v-row>
-                            
-                             <v-row dense>
-                                <v-col >
-                                    <v-text-field label="Email" v-model="email"></v-text-field>
-                                </v-col>
-                            </v-row>
-                             <v-row dense>
-                                <v-col >
-                                    <v-text-field label="Phone" v-model="phone" ></v-text-field>
-                                </v-col>
-                            </v-row>
-                            <v-row dense>
-                                <v-col >
-                                    <v-text-field label="DeliveryAddress" v-model="deliveryAddress" ></v-text-field>
-                                </v-col>
-                            </v-row>
-                            <v-row dense>
-                                <v-col cols="12" md="2" sm="6" > Role: </v-col>
-                                <v-col cols="12" md="10" sm="6">
-                                    <v-radio-group v-model="userType">
-                                        <v-row>
-                                            <v-col cols="12" md="6" sm="6" >
-                                                <v-radio label="Admin" value="2"></v-radio>
-                                            </v-col>
-                                            <v-col cols="12" md="6" sm="6" >
-                                                <v-radio label="Customer" value="3"></v-radio>
-                                            </v-col>
-                                            <v-col cols="12" md="6" sm="6" >
-                                                <v-radio label="farmer" value="3"></v-radio>
-                                            </v-col>
-                                        </v-row>
-                                    </v-radio-group>
-                                </v-col>
-                            </v-row>
-                        </v-card-text>
-                        <v-card-actions>
-                            <v-spacer></v-spacer>
-                            <v-btn text="Close" variant="plain" @click="close()" ></v-btn>
-                            <v-btn color="primary" type="submit" text="Save" variant="tonal" @click="addUser()" ></v-btn>
-                        </v-card-actions>
-                    </v-card>
-                </v-form>
-            </v-dialog>
-    
-     <!--Services-->
-     <!--Add services-->
-         <v-dialog v-model="showAddservicesDialog" max-width="600">
-        <v-form @submit.prevent >
-            <v-card>
-                <v-card-title class="pa-6">
-                <v-row>
-                        Add Services
-                        <v-spacer></v-spacer>
-                        <v-btn class="ma-2" color="blue-darken-2" icon="mdi-close" @click="close();"></v-btn>
-                    </v-row>
-                </v-card-title>
-                <v-card-text>
-                    <v-row dense>
-                        <v-col >
-                            <v-text-field label="Name" v-model="ServiceName"></v-text-field>
-                        </v-col>
-                    </v-row>
-                    
-                        <v-row dense>
-                        <v-col >
-                            <v-text-field label="Price" v-model="price"></v-text-field>
-                        </v-col>
-                    </v-row>
-                        <v-row dense>
-                        <v-col >
-                            <v-text-field label="Short Description" v-model="description" ></v-text-field>
-                        </v-col>
-                    </v-row>
-                    <v-row dense>
-                        <v-col >
-                            <v-textarea label="Long Description" v-model="longDescription" ></v-textarea>
-                        </v-col>
-                    </v-row>
-                    <v-row dense>
-                        <v-col cols="12" md="2" sm="6" > Category: </v-col>
-                        <v-col cols="12" md="10" sm="6">
-                            <v-radio-group v-model="category">
-                                <v-row>
-                                    <v-col cols="12" md="6" sm="6" >
-                                        <v-radio label="Logistics" value="2"></v-radio>
-                                    </v-col>
-                                    <v-col cols="12" md="6" sm="6" >
-                                        <v-radio label="Agronomy" value="3"></v-radio>
-                                    </v-col>
-                                  </v-row>
-                                  <v-col cols="12" md="6" sm="6" >
-                                        <v-radio label="Infrastructure" value="2"></v-radio>
-                                    </v-col>
-                                    <v-col cols="12" md="6" sm="6" >
-                                        <v-radio label="Machinery" value="2"></v-radio>
-                                    </v-col>
-                                    <v-col cols="12" md="6" sm="6" >
-                                        <v-radio label="Education" value="2"></v-radio>
-                                      </v-col>
-                                    <v-col cols="12" md="6" sm="6" >
-                                        <v-radio label="Temporary structures" value="2"></v-radio>
-                                    </v-col>
-                                <v-row dense>
-                                <v-col >
-                                    <v-file-input label="Image" prepend-icon="mdi-camera" v-model="image" ></v-file-input>
-                                </v-col>
-                            </v-row>
-                            </v-radio-group>
-                        </v-col>
-                    </v-row>
-                </v-card-text>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn text="Close" variant="plain" @click="close()" ></v-btn>
-                    <v-btn color="primary" type="submit" text="Save" variant="tonal" @click="addUser()" ></v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-form>
-    </v-dialog>
-     
-       
-</template>

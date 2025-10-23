@@ -2,6 +2,7 @@
 import "leaflet/dist/leaflet.css";
 import * as L from "leaflet";
 import { ref } from "vue";
+import TermsAndConditions from "@/components/TermsAndConditions.vue"; // ✅ Import new component
 
 // ✅ Carousel settings
 const carouselWidth = ref("80%");
@@ -17,23 +18,28 @@ const viewingFAQ = ref(true); // true when viewing common FAQs
 const commonQueries = [
   {
     question: "How can I place an order?",
-    answer:"To place an order, go to the Products section, select your desired item, and click 'Order Now'. You can then confirm your purchase easily.",
+    answer:
+      "To place an order, go to the Products section, select your desired item, and click 'Order Now'. You can then confirm your purchase easily.",
   },
   {
     question: "Do you deliver produce?",
-    answer:"Yes! We deliver across major towns in Kenya. Delivery charges depend on your location and order size.",
+    answer:
+      "Yes! We deliver across major towns in Kenya. Delivery charges depend on your location and order size.",
   },
   {
     question: "Can I sell my farm produce on FarmTrade Hub?",
-    answer:"Absolutely. Simply sign up as a farmer, create your product listings, and start selling directly to customers.",
+    answer:
+      "Absolutely. Simply sign up as a farmer, create your product listings, and start selling directly to customers.",
   },
   {
     question: "How do I contact customer support?",
-    answer:"You can reach us through WhatsApp (+254 791 018 109) or email us at farmtradehub@gmail.com.",
+    answer:
+      "You can reach us through WhatsApp (+254 791 018 109) or email us at farmtradehub@gmail.com.",
   },
   {
     question: "What payment methods do you accept?",
-    answer:"We accept M-Pesa, bank transfers, and selected mobile wallets for your convenience.",
+    answer:
+      "We accept M-Pesa, bank transfers, and selected mobile wallets for your convenience.",
   },
 ];
 
@@ -139,6 +145,7 @@ function backToFAQs() {
             <strong>Email:</strong> farmtradehub@gmail.com
           </v-card-text>
         </v-col>
+
         <v-col cols="12" md="4">
           <v-card-actions class="d-flex justify-center social-icons">
             <v-btn
@@ -174,6 +181,19 @@ function backToFAQs() {
               class="social-btn"
             ></v-btn>
           </v-card-actions>
+        </v-col>
+
+        <!-- ✅ Reusable Terms and Conditions component -->
+        <v-col cols="12" md="4">
+          <TermsAndConditions />
+        </v-col>
+      </v-row>
+
+      <v-divider class="my-4" color="white"></v-divider>
+
+      <v-row>
+        <v-col class="text-center">
+          <small>&copy; {{ new Date().getFullYear() }} FarmTrade Hub. All rights reserved.</small>
         </v-col>
       </v-row>
     </v-container>
@@ -291,7 +311,7 @@ function backToFAQs() {
 /* ✅ Footer */
 .contact-section {
   width: 100%;
-  background-image: url("/images/Farmbackground.jpg");
+  background: linear-gradient(135deg, #75dc0f, #101414);
   background-size: cover;
   background-position: center;
   color: white;
@@ -370,7 +390,7 @@ function backToFAQs() {
 }
 .comment-item.bot {
   text-align: left;
-  color: #004d40;
+  color: #16bca0;
 }
 
 /*  Animations */

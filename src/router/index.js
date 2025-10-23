@@ -12,7 +12,7 @@ import ProductDetails from "@/components/ProductDetails.vue";
 import Services from "@/components/Services.vue";
 import ServiceDetails from "@/components/ServiceDetails.vue";
 import Signup from "@/components/Signup.vue";
-import Contact from "@/components/Contact.vue";
+import TermsAndConditions from "@/components/TermsAndConditions.vue";
 
 const routes = [
 
@@ -24,9 +24,9 @@ const routes = [
      name: "aboutus",
     component: AboutUs },
 
-  { path: "/contact",
-    name: "contact",
-    component: Contact },
+  { path: "/termsandconditions",
+    name: "termsandconditions",
+    component: TermsAndConditions },
 
     {path:"/products",
       name:"products",
