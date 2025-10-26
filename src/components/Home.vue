@@ -1,99 +1,8 @@
-<script setup>
-import "leaflet/dist/leaflet.css";
-import * as L from "leaflet";
-import { ref } from "vue";
-import TermsAndConditions from "@/components/TermsAndConditions.vue"; // ✅ Import new component
-
-// ✅ Carousel settings
-const carouselWidth = ref("80%");
-const carouselHeight = ref("490px");
-
-// 💬 Chat system
-const showChat = ref(false);
-const comment = ref("");
-const comments = ref([]);
-const viewingFAQ = ref(true); // true when viewing common FAQs
-
-// ✅ Predefined common queries
-const commonQueries = [
-  {
-    question: "How can I place an order?",
-    answer:
-      "To place an order, go to the Products section, select your desired item, and click 'Order Now'. You can then confirm your purchase easily.",
-  },
-  {
-    question: "Do you deliver produce?",
-    answer:
-      "Yes! We deliver across major towns in Kenya. Delivery charges depend on your location and order size.",
-  },
-  {
-    question: "Can I sell my farm produce on FarmTrade Hub?",
-    answer:
-      "Absolutely. Simply sign up as a farmer, create your product listings, and start selling directly to customers.",
-  },
-  {
-    question: "How do I contact customer support?",
-    answer:
-      "You can reach us through WhatsApp (+254 791 018 109) or email us at farmtradehub@gmail.com.",
-  },
-  {
-    question: "What payment methods do you accept?",
-    answer:
-      "We accept M-Pesa, bank transfers, and selected mobile wallets for your convenience.",
-  },
-];
-
-// ✅ Toggle chat
-function toggleChat() {
-  showChat.value = !showChat.value;
-  if (!showChat.value) {
-    comments.value = [];
-    viewingFAQ.value = true;
-  }
-}
-
-// ✅ Post custom message
-function postComment() {
-  if (comment.value.trim() !== "") {
-    comments.value.push({
-      text: comment.value,
-      timestamp: new Date().toLocaleTimeString(),
-      from: "user",
-    });
-    comment.value = "";
-    viewingFAQ.value = false;
-  }
-}
-
-// ✅ Handle FAQ selection
-function handleQueryClick(query) {
-  viewingFAQ.value = false;
-  comments.value.push({
-    text: query.question,
-    timestamp: new Date().toLocaleTimeString(),
-    from: "user",
-  });
-  setTimeout(() => {
-    comments.value.push({
-      text: query.answer,
-      timestamp: new Date().toLocaleTimeString(),
-      from: "bot",
-    });
-  }, 400);
-}
-
-// ✅ Return to FAQs
-function backToFAQs() {
-  comments.value = [];
-  viewingFAQ.value = true;
-}
-</script>
-
 <template>
   <!-- ✅ News Ticker -->
   <div class="news-ticker">
     <marquee behavior="scroll" direction="left" scrollamount="6">
-      🌾 Welcome to <strong>FarmTrade Hub</strong> — Bridging farmers and buyers directly for fresh, sustainable produce!
+      🌾 Welcome to <strong>FarmTrade-Hub</strong> — Bridging farmers and buyers directly for fresh, sustainable produce!
     </marquee>
   </div>
 
@@ -117,17 +26,24 @@ function backToFAQs() {
     <v-row>
       <v-card class="pa-6 text-center">
         <v-card-text>
-          <p class="text-h5"><b>WELCOME TO FARMTRADE HUB</b></p>
-          FarmTrade Hub is the revolutionary platform bridging the gap between
-          local farmers and discerning buyers.
-          <br />
-          We empower farmers to effortlessly showcase and sell their fresh,
-          high-quality produce directly to customers, cutting out middlemen and
-          ensuring fair prices.
-          <br />
-          For buyers, FarmTrade Hub offers unparalleled access to farm-fresh
-          goods, supporting local agriculture and promoting sustainable food
-          choices.
+          <p class="text-h5"><b>WELCOME TO FARMTRADE-HUB</b></p>
+          <p>
+            FarmTrade-Hub is an innovative grocery application designed to
+            <strong>bridge the gap between farmers and customers</strong> by creating
+            a direct, transparent, and reliable marketplace for fresh farm produce.
+            Through this platform, local farmers can showcase and sell their goods
+            without middlemen, ensuring they earn fair value for their hard work.
+            At the same time, customers gain access to <strong>fresh, affordable, and
+            traceable</strong> food products sourced straight from trusted local farms.
+          </p>
+          <p>
+            The app strengthens the farmer–consumer relationship by promoting
+            <strong>trust, sustainability, and convenience</strong>. FarmTrade-Hub not
+            only empowers farmers through digital access to markets but also enhances
+            customer experience by simplifying produce shopping—from browsing to
+            doorstep delivery. It’s more than an app; it’s a community connecting
+            those who grow the food and those who enjoy it.
+          </p>
         </v-card-text>
       </v-card>
     </v-row>
@@ -137,6 +53,7 @@ function backToFAQs() {
   <v-footer class="contact-section pa-6" height="auto">
     <v-container fluid>
       <v-row class="text-center d-flex justify-center align-center">
+        <!-- 📞 Contact Info -->
         <v-col cols="12" md="4">
           <v-card-text>
             <strong>Phone:</strong> (+254) 791 018 109
@@ -146,44 +63,52 @@ function backToFAQs() {
           </v-card-text>
         </v-col>
 
+        <!-- 🌐 Social Media Links -->
         <v-col cols="12" md="4">
           <v-card-actions class="d-flex justify-center social-icons">
             <v-btn
-              icon="mdi-facebook"
-              href="https://www.facebook.com/FarmTradeHub"
-              target="_blank"
-              rel="noopener"
+              icon
               variant="text"
-              class="social-btn"
-            ></v-btn>
+              :href="'https://www.facebook.com/FarmTradeHub'"
+              target="_blank"
+              class="social-btn facebook"
+            >
+              <v-icon size="28">mdi-facebook</v-icon>
+            </v-btn>
+
             <v-btn
-              icon="mdi-twitter"
-              href="https://twitter.com/FarmTradeHub"
-              target="_blank"
-              rel="noopener"
+              icon
               variant="text"
-              class="social-btn"
-            ></v-btn>
+              :href="'https://x.com/FarmTradeHub'"
+              target="_blank"
+              class="social-btn twitter"
+            >
+              <v-icon size="28">mdi-twitter</v-icon>
+            </v-btn>
+
             <v-btn
-              icon="mdi-instagram"
-              href="https://www.instagram.com/FarmTradeHub"
-              target="_blank"
-              rel="noopener"
+              icon
               variant="text"
-              class="social-btn"
-            ></v-btn>
+              :href="'https://www.instagram.com/FarmTradeHub'"
+              target="_blank"
+              class="social-btn instagram"
+            >
+              <v-icon size="28">mdi-instagram</v-icon>
+            </v-btn>
+
             <v-btn
-              icon="mdi-whatsapp"
-              href="https://wa.me/254791018109?text=Hello%20FarmTrade%20Hub!%20I'm%20interested%20in%20your%20products."
-              target="_blank"
-              rel="noopener"
+              icon
               variant="text"
-              class="social-btn"
-            ></v-btn>
+              :href="'https://wa.me/254791018109'"
+              target="_blank"
+              class="social-btn whatsapp"
+            >
+              <v-icon size="28">mdi-whatsapp</v-icon>
+            </v-btn>
           </v-card-actions>
         </v-col>
 
-        <!-- ✅ Reusable Terms and Conditions component -->
+        <!-- ⚖️ Terms -->
         <v-col cols="12" md="4">
           <TermsAndConditions />
         </v-col>
@@ -193,46 +118,29 @@ function backToFAQs() {
 
       <v-row>
         <v-col class="text-center">
-          <small>&copy; {{ new Date().getFullYear() }} FarmTrade Hub. All rights reserved.</small>
+          <small>&copy; {{ new Date().getFullYear() }} FarmTrade-Hub. All rights reserved.</small>
         </v-col>
       </v-row>
     </v-container>
   </v-footer>
 
   <!-- 💬 Floating Chat Icon -->
-  <v-btn
-    icon
-    color="teal-darken-3"
-    class="chat-btn"
-    @click="toggleChat"
-    elevation="10"
-  >
+  <v-btn icon color="teal-darken-3" class="chat-btn" @click="toggleChat" elevation="10">
     <v-icon size="30">mdi-chat</v-icon>
   </v-btn>
 
   <!-- 💭 Chat Box -->
   <transition name="fade">
-    <v-card
-      v-if="showChat"
-      class="chat-box pa-4 rounded-lg"
-      elevation="10"
-    >
-      <!-- 🧩 Chat Header -->
+    <v-card v-if="showChat" class="chat-box pa-4 rounded-lg" elevation="10">
       <v-card-title class="d-flex justify-space-between align-center text-h6">
         <span>💬 Chat Support</span>
-        <v-icon
-          color="red-darken-2"
-          size="24"
-          class="cursor-pointer"
-          @click="toggleChat"
-        >
+        <v-icon color="red-darken-2" size="24" class="cursor-pointer" @click="toggleChat">
           mdi-close
         </v-icon>
       </v-card-title>
 
       <v-divider></v-divider>
 
-      <!-- 🧠 Common FAQs -->
       <v-card-text v-if="viewingFAQ" class="chat-messages">
         <p class="text-subtitle-1 mb-3"><b>Common Questions</b></p>
         <v-list dense>
@@ -247,30 +155,17 @@ function backToFAQs() {
         </v-list>
       </v-card-text>
 
-      <!-- 💬 Conversation -->
       <v-card-text v-else class="chat-messages">
-        <div
-          v-for="(c, index) in comments"
-          :key="index"
-          class="comment-item"
-          :class="c.from"
-        >
+        <div v-for="(c, index) in comments" :key="index" class="comment-item" :class="c.from">
           <p>{{ c.text }}</p>
           <small class="text-grey">{{ c.timestamp }}</small>
           <v-divider class="my-2"></v-divider>
         </div>
-        <v-btn
-          block
-          color="teal-darken-2"
-          variant="outlined"
-          class="mt-2"
-          @click="backToFAQs"
-        >
+        <v-btn block color="teal-darken-2" variant="outlined" class="mt-2" @click="backToFAQs">
           ⬅ Back to FAQs
         </v-btn>
       </v-card-text>
 
-      <!-- ✍️ Input Field -->
       <v-card-actions>
         <v-text-field
           v-model="comment"
@@ -280,16 +175,100 @@ function backToFAQs() {
           hide-details
           class="flex-grow-1"
         ></v-text-field>
-        <v-btn color="teal-darken-3" @click="postComment" variant="elevated">
-          Send
-        </v-btn>
+        <v-btn color="teal-darken-3" @click="postComment" variant="elevated">Send</v-btn>
       </v-card-actions>
     </v-card>
   </transition>
 </template>
 
+<script setup>
+import { ref, watch } from "vue";
+import TermsAndConditions from "@/components/TermsAndConditions.vue";
+
+const carouselWidth = ref("80%");
+const carouselHeight = ref("490px");
+
+// 💬 Chat system
+const showChat = ref(false);
+const comment = ref("");
+const comments = ref(JSON.parse(localStorage.getItem("userMessages")) || []);
+const viewingFAQ = ref(true);
+
+const commonQueries = [
+  {
+    question: "How can I place an order?",
+    answer:
+      "To place an order, go to the Products section, select your desired item, and click 'Order Now'.",
+  },
+  {
+    question: "Do you deliver produce?",
+    answer:
+      "Yes! We deliver across major towns in Kenya. Delivery charges depend on your location.",
+  },
+  {
+    question: "Can I sell my farm produce on FarmTrade-Hub?",
+    answer:
+      "Absolutely. Sign up as a farmer, create your product listings, and start selling directly to customers.",
+  },
+  {
+    question: "How do I contact customer support?",
+    answer:
+      "You can reach us through WhatsApp (+254 791 018 109) or email farmtradehub@gmail.com.",
+  },
+  {
+    question: "What payment methods do you accept?",
+    answer: "We accept M-Pesa, bank transfers, and selected mobile wallets.",
+  },
+];
+
+// Save messages to localStorage
+watch(
+  comments,
+  (newVal) => {
+    localStorage.setItem("userMessages", JSON.stringify(newVal));
+  },
+  { deep: true }
+);
+
+function toggleChat() {
+  showChat.value = !showChat.value;
+  if (!showChat.value) viewingFAQ.value = true;
+}
+
+function postComment() {
+  if (comment.value.trim() !== "") {
+    comments.value.push({
+      text: comment.value,
+      timestamp: new Date().toLocaleTimeString(),
+      from: "user",
+    });
+    comment.value = "";
+    viewingFAQ.value = false;
+  }
+}
+
+function handleQueryClick(query) {
+  viewingFAQ.value = false;
+  comments.value.push({
+    text: query.question,
+    timestamp: new Date().toLocaleTimeString(),
+    from: "user",
+  });
+  setTimeout(() => {
+    comments.value.push({
+      text: query.answer,
+      timestamp: new Date().toLocaleTimeString(),
+      from: "bot",
+    });
+  }, 400);
+}
+
+function backToFAQs() {
+  viewingFAQ.value = true;
+}
+</script>
+
 <style scoped>
-/* ✅ News Ticker */
 .news-ticker {
   width: 100%;
   background-color: skyblue;
@@ -300,7 +279,6 @@ function backToFAQs() {
   border-bottom: 2px solid #0077b6;
 }
 
-/* ✅ Carousel */
 .centered-carousel {
   margin: 0 auto;
   border-radius: 20px;
@@ -308,27 +286,34 @@ function backToFAQs() {
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
 }
 
-/* ✅ Footer */
 .contact-section {
-  width: 100%;
   background: linear-gradient(135deg, #75dc0f, #101414);
-  background-size: cover;
-  background-position: center;
   color: white;
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
 }
 
-/* Social Buttons */
+/* 🌈 Social Media Icon Hover Effects */
 .social-btn {
-  color: rgb(209, 204, 204);
-  transition: all 0.3s ease;
-}
-.social-btn:hover {
-  transform: scale(1.3);
-  color: #f7ff07;
+  transition: transform 0.3s, color 0.3s, background-color 0.3s;
 }
 
-/*  Floating Chat */
+.social-btn:hover {
+  transform: scale(1.2);
+}
+
+.social-btn.facebook:hover v-icon {
+  color: #1877f2 !important;
+}
+.social-btn.twitter:hover v-icon {
+  color: #1da1f2 !important;
+}
+.social-btn.instagram:hover v-icon {
+  color: #e1306c !important;
+}
+.social-btn.whatsapp:hover v-icon {
+  color: #25d366 !important;
+}
+
 .chat-btn {
   position: fixed;
   bottom: 40px;
@@ -337,7 +322,6 @@ function backToFAQs() {
   color: white;
 }
 
-/* Chat Box */
 .chat-box {
   position: fixed;
   bottom: 100px;
@@ -346,69 +330,18 @@ function backToFAQs() {
   max-height: 420px;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(15px);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
 }
 
-/*  Scrollable Area */
 .chat-messages {
   max-height: 250px;
   overflow-y: auto;
-  margin-top: 10px;
-  padding-right: 6px;
 }
 
-/*  Custom Scrollbar */
-.chat-messages::-webkit-scrollbar {
-  width: 8px;
-}
-.chat-messages::-webkit-scrollbar-track {
-  background: #ebe6e6;
-  border-radius: 10px;
-}
-.chat-messages::-webkit-scrollbar-thumb {
-  background: #009688;
-  border-radius: 12px;
-}
-.chat-messages::-webkit-scrollbar-thumb:hover {
-  background: #2276a4;
-}
-
-/* FAQ Items */
-.query-item {
-  cursor: pointer;
-  transition: background 0.3s;
-}
-.query-item:hover {
-  background-color: #e0f2f1;
-}
-
-/* Chat Roles */
 .comment-item.user {
   text-align: right;
 }
 .comment-item.bot {
   text-align: left;
   color: #16bca0;
-}
-
-/*  Animations */
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.3s;
-}
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-
-/* Close Icon Hover */
-.cursor-pointer {
-  cursor: pointer;
-  transition: transform 0.2s;
-}
-.cursor-pointer:hover {
-  transform: scale(1.2);
 }
 </style>

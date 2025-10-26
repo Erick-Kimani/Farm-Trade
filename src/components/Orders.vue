@@ -48,7 +48,7 @@ const confirmPurchase = () => {
 
 <template>
   <v-container>
-    <h1 class="text-center text-3xl font-bold text-primary mb-6">🛒 My Orders</h1>
+    <h1 class="text-center text-3xl font-bold text-primary mb-6">🛒 My Cart</h1>
 
     <!-- Purchase Button -->
     <v-row v-if="orders.length > 0">

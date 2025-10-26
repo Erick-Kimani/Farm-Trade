@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useProductsStore } from '@/stores/Products'
 
@@ -9,9 +9,21 @@ const store = useProductsStore()
 
 // Fetch products from the store
 const products = ref([])
+const searchQuery = ref('') // 🔍 Holds user input for search
 
 onMounted(() => {
   products.value = store.products
+})
+
+// Computed property to filter products
+const filteredProducts = computed(() => {
+  if (!searchQuery.value) return products.value
+  const query = searchQuery.value.toLowerCase()
+  return products.value.filter(
+    (product) =>
+      product.name.toLowerCase().includes(query) ||
+      product.description.toLowerCase().includes(query)
+  )
 })
 
 // Go to details page
@@ -23,11 +35,24 @@ function viewDetails(product) {
 
 <template>
   <v-container class="py-10">
-    <h1 class="text-center mb-8 text-3xl font-bold text-primary">Our Products</h1>
+    <h1 class="text-center mb-8 text-3xl font-bold text-primary">
+      Our Products
+    </h1>
 
+    <!-- 🔍 Search Bar -->
+    <v-text-field
+      v-model="searchQuery"
+      label="Search for a product..."
+      prepend-inner-icon="mdi-magnify"
+      outlined
+      clearable
+      class="mb-8"
+    ></v-text-field>
+
+    <!-- Products Display -->
     <v-row>
       <v-col
-        v-for="(product, index) in products"
+        v-for="(product, index) in filteredProducts"
         :key="index"
         cols="12"
         sm="6"
@@ -45,13 +70,17 @@ function viewDetails(product) {
           <p class="text-gray-600 mb-4">{{ product.description }}</p>
           <p class="text-primary font-bold mb-4">Price: {{ product.price }}</p>
 
-          <v-btn
-            color="orange"
-            @click="viewDetails(product)"
-          >
+          <v-btn color="orange" @click="viewDetails(product)">
             View Details
           </v-btn>
         </v-card>
+      </v-col>
+
+      <!-- 🧭 Message for no results -->
+      <v-col v-if="filteredProducts.length === 0" cols="12" class="text-center">
+        <p class="text-gray-600 mt-4">
+          No products found matching "<strong>{{ searchQuery }}</strong>"
+        </p>
       </v-col>
     </v-row>
   </v-container>

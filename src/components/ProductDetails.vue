@@ -128,10 +128,10 @@ function placeOrder() {
         </span>
       </div>
 
-      <!-- 🛒 Order Button -->
+      <!-- 🛒 Add to cart Button -->
       <div class="text-center mt-6">
         <v-btn color="indigo" @click="placeOrder">
-          🛒 Order Now
+          🛒 Add to cart
         </v-btn>
       </div>
     </v-card>

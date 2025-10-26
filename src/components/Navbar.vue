@@ -55,10 +55,10 @@ function logout() {
       <!-- 🔗 Navbar Links -->
       <div class="nav-links d-flex align-center">
         <v-btn text class="text-white" @click="goTo('/')">Home</v-btn>
+        <v-btn text class="text-white" @click="goTo('/products')">Grocery</v-btn>
         <v-btn text class="text-white" @click="goTo('/services')">Services</v-btn>
         <v-btn text class="text-white" @click="goTo('/aboutus')">AboutUs</v-btn>
-        <v-btn text class="text-white" @click="goTo('/products')">Products</v-btn>
-        <v-btn v-if="isLoggedIn" text class="text-white" @click="goTo('/orders')"> My Order </v-btn>
+        <v-btn v-if="isLoggedIn" text class="text-white" @click="goTo('/orders')"> Add to Cart </v-btn>
         <v-btn v-if="isLoggedIn && isAdmin"textclass="text-white"@click="goTo('/admin')">Admin</v-btn>
       </div>
 
@@ -69,7 +69,7 @@ function logout() {
             <v-avatar
               v-bind="props"
               color="white"
-              size="40"
+              size="50"
               class="cursor-pointer"
             >
               <span class="text-deep-orange-lighten-2 font-weight-bold text-h6">

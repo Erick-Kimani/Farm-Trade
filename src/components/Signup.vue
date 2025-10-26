@@ -1,138 +1,9 @@
-<template>
-  <v-container fluid fill-height class="signup-background">
-    <v-row justify="center" align="center">
-      <v-col cols="12" sm="8" md="6" lg="4">
-        <v-card elevation="10" class="pa-6 rounded-lg glass-card">
-          <v-form @submit.prevent="signUp" ref="form">
-            <div class="text-center mb-6">
-              <h1 class="text-h4 font-weight-bold teal--text text--darken-2">
-                Welcome to FarmTrade Hub
-              </h1>
-            </div>
-
-            <!-- Full Name -->
-            <v-text-field
-              v-model="name"
-              label="Full Name"
-              prepend-inner-icon="mdi-account"
-              :rules="[(v) => !!v || 'Name is required']"
-              required
-              outlined
-              dense
-            ></v-text-field>
-
-            <!-- Email -->
-            <v-text-field
-              v-model="email"
-              label="Email"
-              prepend-inner-icon="mdi-email"
-              :rules="[
-                (v) => !!v || 'Email is required',
-                (v) => /.+@.+\..+/.test(v) || 'Email must be valid',
-              ]"
-              required
-              outlined
-              dense
-              autocomplete="off"
-            ></v-text-field>
-
-            <!-- Phone -->
-            <v-text-field
-              v-model="phone"
-              label="Phone Number"
-              prepend-inner-icon="mdi-phone"
-              :rules="[(v) => !!v || 'Phone is required']"
-              required
-              outlined
-              dense
-              autocomplete="off"
-            ></v-text-field>
-
-            <!-- Delivery Address -->
-            <v-text-field
-              v-model="delivery_address"
-              label="Delivery Address"
-              prepend-inner-icon="mdi-location"
-              :rules="[(v) => !!v || 'Address is required']"
-              required
-              outlined
-              dense
-            ></v-text-field>
-
-            <!-- Password -->
-            <v-text-field
-              v-model="password"
-              label="Password"
-              prepend-inner-icon="mdi-lock"
-              :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-              :type="showPassword ? 'text' : 'password'"
-              @click:append="showPassword = !showPassword"
-              :rules="[
-                (v) => !!v || 'Password is required',
-                (v) => v.length >= 8 || 'Password must be at least 8 characters',
-              ]"
-              required
-              outlined
-              dense
-              autocomplete="new-password"
-            ></v-text-field>
-
-            <!-- Confirm Password -->
-            <v-text-field
-              v-model="password_confirmation"
-              label="Confirm Password"
-              prepend-inner-icon="mdi-lock-check"
-              :append-icon="showConfirmPassword ? 'mdi-eye' : 'mdi-eye-off'"
-              :type="showConfirmPassword ? 'text' : 'password'"
-              @click:append="showConfirmPassword = !showConfirmPassword"
-              :rules="[
-                (v) => !!v || 'Please confirm your password',
-                (v) => v === password || 'Passwords must match',
-              ]"
-              required
-              outlined
-              dense
-              autocomplete="off"
-            ></v-text-field>
-
-            <!-- Submit Button -->
-            <v-btn
-              block
-              color="deep-orange-lighten-2"
-              dark
-              class="mt-4"
-              large
-              type="submit"
-            >
-              Sign Up
-            </v-btn>
-
-            <!-- Redirect to Login -->
-            <div class="text-center mt-6">
-              <p>
-                Already have an account?
-                <router-link
-                  to="/login"
-                  class="teal--text text--darken-2 font-weight-medium"
-                >
-                  Log In
-                </router-link>
-              </p>
-            </div>
-          </v-form>
-        </v-card>
-      </v-col>
-    </v-row>
-  </v-container>
-</template>
-
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
 
-const form = ref(null);
 const name = ref("");
 const email = ref("");
 const phone = ref("");
@@ -143,7 +14,6 @@ const showPassword = ref(false);
 const showConfirmPassword = ref(false);
 
 function signUp() {
-  // 🧠 Split full name into first + last initials
   const initials = name.value
     .split(" ")
     .map((n) => n.charAt(0).toUpperCase())
@@ -162,41 +32,248 @@ function signUp() {
   };
 
   try {
-    // Save new user data in localStorage
     localStorage.setItem("signupData", JSON.stringify(newUser));
     localStorage.setItem("user", JSON.stringify(newUser));
     localStorage.setItem("isLoggedIn", true);
-
-    // ✅ Redirect to homepage and reload
-    router.push("/").then(() => {
-      router.go(0);
-    });
+    alert(`🎉 Welcome, ${name.value}! Your account has been created.`);
+    router.push("/").then(() => router.go(0));
   } catch (err) {
-    console.error("Sign up failed", err);
+    console.error("Sign up failed:", err);
     alert("Error creating your account. Please try again.");
   }
 }
 </script>
 
+<template>
+  <v-container class="signup-container" fluid>
+    <div class="split-bg">
+      <!-- 🟦 Left Blue Section -->
+      <div class="blue-section">
+        <!-- 🟢 Welcome Text -->
+        <h2 class="welcome-text">Create Your Account</h2>
+
+        <!-- 🧊 Signup Card -->
+        <v-card class="glass-card pa-6">
+          <v-card-title
+            class="text-center text-h5 font-weight-bold text-white"
+          >
+            Sign Up
+          </v-card-title>
+
+          <!-- Full Name -->
+          <v-text-field
+            v-model="name"
+            label="Full Name"
+            variant="outlined"
+            color="deep-orange-darken-2"
+            prepend-inner-icon="mdi-account"
+            :rules="[(v) => !!v || 'Name is required']"
+          />
+
+          <!-- Email -->
+          <v-text-field
+            v-model="email"
+            label="Email Address"
+            variant="outlined"
+            color="deep-orange-darken-2"
+            prepend-inner-icon="mdi-email"
+            autocomplete="off"
+            :rules="[
+              (v) => !!v || 'Email is required',
+              (v) => /.+@.+\..+/.test(v) || 'Email must be valid',
+            ]"
+          />
+
+          <!-- Phone -->
+          <v-text-field
+            v-model="phone"
+            label="Phone Number"
+            variant="outlined"
+            color="deep-orange-darken-2"
+            prepend-inner-icon="mdi-phone"
+            autocomplete="off"
+            :rules="[(v) => !!v || 'Phone number is required']"
+          />
+
+          <!-- Delivery Address -->
+          <v-text-field
+            v-model="delivery_address"
+            label="Delivery Address"
+            variant="outlined"
+            color="deep-orange-darken-2"
+            prepend-inner-icon="mdi-map-marker"
+            :rules="[(v) => !!v || 'Address is required']"
+          />
+
+          <!-- Password -->
+          <v-text-field
+            v-model="password"
+            label="Password"
+            variant="outlined"
+            color="deep-orange-darken-2"
+            prepend-inner-icon="mdi-lock"
+            :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+            :type="showPassword ? 'text' : 'password'"
+            @click:append="showPassword = !showPassword"
+            :rules="[
+              (v) => !!v || 'Password is required',
+              (v) => v.length >= 8 || 'Minimum 8 characters required',
+            ]"
+          />
+
+          <!-- Confirm Password -->
+          <v-text-field
+            v-model="password_confirmation"
+            label="Confirm Password"
+            variant="outlined"
+            color="deep-orange-darken-2"
+            prepend-inner-icon="mdi-lock-check"
+            :append-icon="showConfirmPassword ? 'mdi-eye' : 'mdi-eye-off'"
+            :type="showConfirmPassword ? 'text' : 'password'"
+            @click:append="showConfirmPassword = !showConfirmPassword"
+            :rules="[
+              (v) => !!v || 'Confirm password required',
+              (v) => v === password || 'Passwords do not match',
+            ]"
+          />
+
+          <!-- Signup Button -->
+          <v-card-actions class="justify-center mt-4">
+            <v-btn class="signup-btn" @click="signUp">Sign Up</v-btn>
+          </v-card-actions>
+
+          <!-- Redirect to Login -->
+          <v-card-text class="text-center text-white">
+            Already have an account?
+            <router-link
+              to="/login"
+              class="font-weight-medium text-white text-decoration-underline"
+            >
+              Log In
+            </router-link>
+          </v-card-text>
+        </v-card>
+      </div>
+
+      <!-- 🟫 Right Beige Section -->
+      <div class="beige-section">
+        <div class="beige-text-container">
+          <h1 class="right-welcome-text">Welcome to the SignUp Page</h1>
+          <p class="right-subtext">
+            Join FarmTrade Hub today and connect directly with trusted farmers and fresh produce suppliers.
+          </p>
+        </div>
+      </div>
+    </div>
+  </v-container>
+</template>
+
 <style scoped>
-/* Background image for the signup page */
-.signup-background {
-  background-image: url("/images/Farmproduce.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  min-height: 100vh;
+.signup-container {
+  height: 127vh;
+  width: 100vw;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: stretch;
 }
 
-/* Glass effect card */
+/* Diagonal Split Background (Blue + Beige) */
+.split-bg {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    135deg,
+    #0d1011 0%,
+    #215164 58%,
+    #edc08d 50%,
+    #f4c998 100%
+  );
+}
+
+/* 🟦 Blue Section (Form area) */
+.blue-section {
+  flex: 1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding-top: 10vh;
+  padding-left: 7vw;
+}
+
+/* 🟫 Beige Section */
+.beige-section {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff8e9;
+  padding: -9rem ;
+}
+
+/* 📝 Text on Beige Section */
+.beige-text-container {
+  text-align: right;
+  max-width: 360px;
+}
+
+.right-welcome-text {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #3d2506;
+  margin-bottom: 10px;
+}
+
+.right-subtext {
+  font-size: 1.6rem;
+  color: #4a3a21;
+  line-height: 1.6;
+  font-weight: 500;
+}
+
+/* ✨ Left Side Welcome Text */
+.welcome-text {
+  color: #ffffff;
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 24px;
+  text-shadow: 1px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* 🧊 Glass Card */
 .glass-card {
+  width: 380px;
   background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
-  border: 20px solid rgba(255, 255, 255, 0.3);
-  border-radius: 20px;
-  box-shadow: 0 8px 32px rgba(120, 101, 101, 0.25);
-  color: rgb(0, 0, 0);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 15px solid rgba(255, 255, 255, 0.3);
+  border-radius: 60px;
+  box-shadow: 0 8px 32px rgba(60, 60, 60, 0.3);
+  color: white;
+  position: relative;
+  z-index: 10;
+}
+
+/* 🌟 Signup Button */
+.signup-btn {
+  background-color: #20e0d9 !important;
+  color: white !important;
+  font-weight: bold;
+  font-size: 16px;
+  padding: 12px 36px;
+  border-radius: 90px;
+  box-shadow: 0 4px 12px rgba(26, 149, 44, 0.7);
+  text-transform: none;
   transition: all 0.3s ease;
+}
+
+.signup-btn:hover {
+  background-color: #d5e617 !important;
+  box-shadow: 0 6px 18px rgb(164, 154, 151);
+  transform: translateY(-2px);
 }
 </style>
