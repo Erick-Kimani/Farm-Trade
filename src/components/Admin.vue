@@ -1,12 +1,12 @@
 <template>
-  <v-app>
+  <v-app :theme="isDark ? 'dark' : 'light'">
     <!-- ✅ Top App Bar -->
     <v-app-bar color="primary" dark>
       <v-app-bar-nav-icon @click="drawer = !drawer" />
       <v-toolbar-title>Admin Dashboard</v-toolbar-title>
     </v-app-bar>
 
-    <!-- ✅ Sidebar Drawer with Hover Effect -->
+    <!-- ✅ Sidebar Drawer -->
     <v-navigation-drawer
       v-model="drawer"
       :rail="rail"
@@ -15,6 +15,7 @@
       @mouseenter="rail = false"
       @mouseleave="rail = true"
     >
+      <!-- 🧑‍💼 Avatar -->
       <v-list>
         <v-list-item>
           <div
@@ -35,7 +36,7 @@
 
       <v-divider></v-divider>
 
-      <!-- ✅ Navigation Menu -->
+      <!-- ✅ Navigation -->
       <v-list density="compact" nav>
         <v-list-item prepend-icon="mdi-home" title="Home" value="home" />
         <v-list-item prepend-icon="mdi-account" title="My Account" value="account" />
@@ -46,6 +47,9 @@
           value="messages"
           @click="toggleMessages"
         />
+        <v-divider class="my-2"></v-divider>
+        <!-- ⚙️ Settings -->
+        <v-list-item prepend-icon="mdi-cog" title="Settings" value="settings" @click="showSettings = true" />
       </v-list>
     </v-navigation-drawer>
 
@@ -66,21 +70,18 @@
               </v-toolbar>
             </template>
 
-            <!-- ✅ Role Chip -->
             <template #item.role="{ value }">
               <v-chip :color="value === 'Farmer' ? 'green-lighten-2' : 'blue-lighten-3'" label>
                 {{ value }}
               </v-chip>
             </template>
 
-            <!-- ✅ Status Button -->
             <template #item.status="{ item }">
               <v-btn :color="item.active ? 'green' : 'red'" @click="toggleStatus(item)">
                 {{ item.active ? 'Deactivate' : 'Activate' }}
               </v-btn>
             </template>
 
-            <!-- ✅ Actions Column -->
             <template #item.actions="{ item }">
               <v-btn icon color="blue" variant="text" @click="editUser(item)">
                 <v-icon>mdi-pencil</v-icon>
@@ -103,7 +104,6 @@
 
           <v-divider></v-divider>
 
-          <!-- 🧾 Messages Display -->
           <v-card-text style="max-height: 350px; overflow-y: auto;">
             <div v-if="userMessages.length">
               <div
@@ -130,7 +130,6 @@
 
           <v-divider></v-divider>
 
-          <!-- ✍️ Reply Section -->
           <v-card-actions class="d-flex align-center pa-3">
             <v-text-field
               v-model="replyText"
@@ -144,6 +143,60 @@
               Send
             </v-btn>
           </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+      <!-- ⚙️ Settings Dialog -->
+      <v-dialog v-model="showSettings" max-width="480">
+        <v-card>
+          <v-card-title class="d-flex justify-space-between align-center">
+            <span>⚙️ App Settings</span>
+            <v-icon color="red" @click="showSettings = false">mdi-close</v-icon>
+          </v-card-title>
+          <v-divider></v-divider>
+
+          <v-card-text>
+            <!-- Theme Toggle -->
+            <v-switch
+              v-model="isDark"
+              inset
+              color="deep-purple"
+              label="Dark Mode"
+              class="my-3"
+            ></v-switch>
+
+            <!-- Notifications -->
+            <v-switch
+              v-model="notificationsEnabled"
+              inset
+              color="blue"
+              label="Enable Notifications"
+              class="my-3"
+            ></v-switch>
+
+            <!-- Backup / Restore -->
+            <v-btn block color="green-darken-1" class="mb-3" @click="backupData">
+              <v-icon start>mdi-content-save</v-icon> Backup App Data
+            </v-btn>
+
+            <v-btn block color="amber-darken-2" class="mb-3" @click="restoreData">
+              <v-icon start>mdi-restore</v-icon> Restore Data
+            </v-btn>
+
+            <!-- Reset -->
+            <v-btn block color="red-darken-2" @click="resetApp">
+              <v-icon start>mdi-delete-alert</v-icon> Reset All Data
+            </v-btn>
+
+            <!-- System Info -->
+            <v-divider class="my-3"></v-divider>
+            <p><strong>System Info:</strong></p>
+            <ul>
+              <li>Version: 1.2.0</li>
+              <li>Environment: Production</li>
+              <li>Last Backup: {{ lastBackup || 'None' }}</li>
+            </ul>
+          </v-card-text>
         </v-card>
       </v-dialog>
 
@@ -186,6 +239,10 @@ const showAddDialog = ref(false);
 const editingUser = ref(false);
 const replyText = ref("");
 const userMessages = ref([]);
+const showSettings = ref(false);
+const isDark = ref(false);
+const notificationsEnabled = ref(true);
+const lastBackup = ref(null);
 
 const users = ref([
   { id: 1, name: "John Mwangi", phone: "0712345678", email: "john@example.com", role: "Farmer", active: true },
@@ -210,75 +267,81 @@ const headers = [
   { title: "Actions", key: "actions" },
 ];
 
-// ✅ Load messages
+// 📨 Messages
 function loadMessages() {
   userMessages.value = JSON.parse(localStorage.getItem("userMessages")) || [];
 }
-
 function toggleMessages() {
   showMessages.value = !showMessages.value;
   if (showMessages.value) loadMessages();
 }
-
 function deleteMessage(index) {
-  if (confirm("Are you sure you want to delete this message?")) {
+  if (confirm("Delete this message?")) {
     userMessages.value.splice(index, 1);
     localStorage.setItem("userMessages", JSON.stringify(userMessages.value));
   }
 }
-
 function sendReply() {
   if (!replyText.value.trim()) return;
-
-  const replyMsg = {
-    text: replyText.value,
-    timestamp: new Date().toLocaleTimeString(),
-    from: "admin",
-  };
+  const replyMsg = { text: replyText.value, timestamp: new Date().toLocaleTimeString(), from: "admin" };
   userMessages.value.push(replyMsg);
   localStorage.setItem("userMessages", JSON.stringify(userMessages.value));
   replyText.value = "";
 }
 
-// ✅ Toggle Active Status
+// 👥 Users
 function toggleStatus(user) {
   user.active = !user.active;
 }
-
-// ✅ Add User / Edit User
 function saveUser() {
-  if (!newUser.value.name || !newUser.value.email || !newUser.value.role) {
-    alert("Please fill in all fields.");
-    return;
-  }
-
+  if (!newUser.value.name || !newUser.value.email || !newUser.value.role) return alert("Fill all fields.");
   if (editingUser.value) {
-    const index = users.value.findIndex((u) => u.id === newUser.value.id);
-    if (index !== -1) users.value[index] = { ...newUser.value };
+    const i = users.value.findIndex((u) => u.id === newUser.value.id);
+    if (i !== -1) users.value[i] = { ...newUser.value };
   } else {
     newUser.value.id = Date.now();
     users.value.push({ ...newUser.value });
   }
-
   closeAddDialog();
 }
-
 function closeAddDialog() {
   showAddDialog.value = false;
   editingUser.value = false;
   newUser.value = { id: null, name: "", phone: "", email: "", role: "", active: true };
 }
-
 function editUser(user) {
   editingUser.value = true;
   newUser.value = { ...user };
   showAddDialog.value = true;
 }
-
 function removeUser(user) {
-  if (confirm(`Are you sure you want to remove ${user.name}?`)) {
-    users.value = users.value.filter((u) => u.id !== user.id);
+  if (confirm(`Remove ${user.name}?`)) users.value = users.value.filter((u) => u.id !== user.id);
+}
+
+// ⚙️ Settings Operations
+function resetApp() {
+  if (confirm("This will delete all app data. Continue?")) {
+    localStorage.clear();
+    users.value = [];
+    userMessages.value = [];
+    alert("✅ App data reset successfully!");
   }
+}
+function backupData() {
+  const data = {
+    users: users.value,
+    messages: userMessages.value,
+  };
+  localStorage.setItem("appBackup", JSON.stringify(data));
+  lastBackup.value = new Date().toLocaleString();
+  alert("💾 Backup completed!");
+}
+function restoreData() {
+  const backup = JSON.parse(localStorage.getItem("appBackup"));
+  if (!backup) return alert("No backup found!");
+  users.value = backup.users || [];
+  userMessages.value = backup.messages || [];
+  alert("✅ Data restored!");
 }
 
 onMounted(() => loadMessages());
@@ -289,12 +352,9 @@ onMounted(() => loadMessages());
   background-color: white;
   border-radius: 12px;
 }
-
 .v-dialog {
   border-radius: 16px;
 }
-
-/* ✨ Smooth hover drawer transition */
 .v-navigation-drawer {
   transition: width 0.3s ease;
 }

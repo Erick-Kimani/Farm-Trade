@@ -1,14 +1,16 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 
 const router = useRouter();
+const route = useRoute();
+
 const showMenu = ref(false);
 const isLoggedIn = ref(true);
 const isAdmin = ref(false);
 const userInitials = ref("");
 
-// 🧠 Fetch user details from localStorage
+// 🧠 Load user info
 onMounted(() => {
   const storedUser = JSON.parse(localStorage.getItem("user"));
   if (storedUser) {
@@ -25,18 +27,18 @@ onMounted(() => {
   }
 });
 
-// 🚀 Navigation function
 function goTo(page) {
   router.push(page);
 }
 
-// 🚪 Logout
 function logout() {
   localStorage.removeItem("isLoggedIn");
   localStorage.removeItem("isAdmin");
   localStorage.removeItem("user");
   router.push("/login");
 }
+
+const isActive = (path) => computed(() => route.path === path);
 </script>
 
 <template>
@@ -45,21 +47,55 @@ function logout() {
 
       <!-- 🌾 Logo + Title -->
       <div class="d-flex align-center logo-title cursor-pointer" @click="goTo('/')">
-        <!-- ✅ White icon -->
         <v-icon color="white" size="35" class="mr-2">mdi-sprout</v-icon>
-        <h2 class="mb-0 text-h5 font-weight-bold text-white">
-          FarmTrade Hub
-        </h2>
+        <h2 class="mb-0 text-h5 font-weight-bold text-white">FarmTrade Hub</h2>
       </div>
 
       <!-- 🔗 Navbar Links -->
       <div class="nav-links d-flex align-center">
-        <v-btn text class="text-white" @click="goTo('/')">Home</v-btn>
-        <v-btn text class="text-white" @click="goTo('/products')">Grocery</v-btn>
-        <v-btn text class="text-white" @click="goTo('/services')">Services</v-btn>
-        <v-btn text class="text-white" @click="goTo('/aboutus')">AboutUs</v-btn>
-        <v-btn v-if="isLoggedIn" text class="text-white" @click="goTo('/orders')"> Add to Cart </v-btn>
-        <v-btn v-if="isLoggedIn && isAdmin"textclass="text-white"@click="goTo('/admin')">Admin</v-btn>
+        <v-btn
+          text
+          class="nav-btn"
+          :class="{ active: isActive('/').value }"
+          @click="goTo('/')"
+        >Home</v-btn>
+
+        <v-btn
+          text
+          class="nav-btn"
+          :class="{ active: isActive('/products').value }"
+          @click="goTo('/products')"
+        >Grocery</v-btn>
+
+        <v-btn
+          text
+          class="nav-btn"
+          :class="{ active: isActive('/services').value }"
+          @click="goTo('/services')"
+        >Services</v-btn>
+
+        <v-btn
+          text
+          class="nav-btn"
+          :class="{ active: isActive('/aboutus').value }"
+          @click="goTo('/aboutus')"
+        >About Us</v-btn>
+
+        <v-btn
+          v-if="isLoggedIn"
+          text
+          class="nav-btn"
+          :class="{ active: isActive('/orders').value }"
+          @click="goTo('/orders')"
+        >Add to Cart</v-btn>
+
+        <v-btn
+          v-if="isLoggedIn && isAdmin"
+          text
+          class="nav-btn"
+          :class="{ active: isActive('/admin').value }"
+          @click="goTo('/admin')"
+        >Admin</v-btn>
       </div>
 
       <!-- 👤 Avatar Dropdown -->
@@ -79,10 +115,10 @@ function logout() {
           </template>
 
           <v-list>
-            <v-list-item @click="goTo('/userprofile')">
+            <v-list-item @click="goTo('/signup')">
               <v-list-item-title>Profile</v-list-item-title>
             </v-list-item>
-            <v-list-item @click="goTo('/settings')">
+            <v-list-item @click="goTo('/signup')">
               <v-list-item-title>Settings</v-list-item-title>
             </v-list-item>
             <v-divider></v-divider>
@@ -95,7 +131,6 @@ function logout() {
           </v-list>
         </v-menu>
       </div>
-
     </v-container>
   </v-app-bar>
 </template>
@@ -109,19 +144,39 @@ function logout() {
   transform: scale(1.05);
 }
 
-/* Navbar buttons */
-.nav-links .v-btn {
+/* 🌟 Navbar Buttons */
+.nav-links .nav-btn {
   text-transform: none;
   font-weight: 500;
   color: white !important;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-.nav-links .v-btn:hover {
-  background-color: rgba(215, 34, 34, 0.2);
-  border-radius: 8px;
+  border-radius: 25px;
+  position: relative;
+  margin: 0 6px;
+  transition: all 0.4s ease;
+  padding: 8px 20px;
+  background-color: transparent;
 }
 
-/* Responsive behavior */
+/* ✨ Hover effect */
+.nav-links .nav-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/*  Active Button */
+.nav-links .nav-btn.active {
+  background: linear-gradient(135deg, #ffca28, #ff8f00);
+  color: #212121 !important;
+  font-weight: 700;
+  box-shadow: 0 0 10px rgba(255, 215, 64, 0.7), 0 0 20px rgba(255, 160, 0, 0.5);
+  transform: translateY(-2px);
+}
+
+/* ✨ Smooth transition when switching pages */
+.nav-links .nav-btn.active {
+  transition: background 0.4s ease, box-shadow 0.4s ease, transform 0.3s ease;
+}
+
+/* 🪶 Responsive */
 @media (max-width: 768px) {
   .nav-links {
     display: none;
