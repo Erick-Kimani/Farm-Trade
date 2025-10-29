@@ -2,7 +2,7 @@
   <!-- ✅ News Ticker -->
   <div class="news-ticker">
     <marquee behavior="scroll" direction="left" scrollamount="6">
-      🌾 Welcome to <strong>FarmTrade-Hub</strong> — Bridging farmers and buyers directly for fresh, sustainable produce!
+    <v-icon>mdi-food-variant</v-icon> Welcome to <strong>FarmTrade-Hub</strong> — Bridging farmers and buyers directly for fresh, sustainable produce!
     </marquee>
   </div>
 
@@ -21,7 +21,7 @@
     </v-carousel>
   </v-container>
 
-  <!-- 🧾 About Section -->
+  <!-- About Section -->
   <v-container>
     <v-row>
       <v-card class="pa-6 text-center">
@@ -49,11 +49,11 @@
     </v-row>
   </v-container>
 
-  <!-- ✅ Footer -->
+  <!--  Footer -->
   <v-footer class="contact-section pa-6" height="auto">
     <v-container fluid>
       <v-row class="text-center d-flex justify-center align-center">
-        <!-- 📞 Contact Info -->
+        <!-- Contact Info -->
         <v-col cols="12" md="4">
           <v-card-text>
             <strong>Phone:</strong> (+254) 791 018 109
@@ -63,7 +63,7 @@
           </v-card-text>
         </v-col>
 
-        <!-- 🌐 Social Media Links -->
+        <!--  Social Media Links -->
         <v-col cols="12" md="4">
           <v-card-actions class="d-flex justify-center social-icons">
             <v-btn
@@ -108,7 +108,7 @@
           </v-card-actions>
         </v-col>
 
-        <!-- ⚖️ Terms -->
+        <!--  Terms -->
         <v-col cols="12" md="4">
           <TermsAndConditions />
         </v-col>
@@ -124,12 +124,12 @@
     </v-container>
   </v-footer>
 
-  <!-- 💬 Floating Chat Icon -->
+  <!--  Floating Chat Icon -->
   <v-btn icon color="teal-darken-3" class="chat-btn" @click="toggleChat" elevation="10">
     <v-icon size="30">mdi-chat</v-icon>
   </v-btn>
 
-  <!-- 💭 Chat Box -->
+  <!-- Chat Box -->
   <transition name="fade">
     <v-card v-if="showChat" class="chat-box pa-4 rounded-lg" elevation="10">
       <v-card-title class="d-flex justify-space-between align-center text-h6">
@@ -188,7 +188,7 @@ import TermsAndConditions from "@/components/TermsAndConditions.vue";
 const carouselWidth = ref("80%");
 const carouselHeight = ref("490px");
 
-// 💬 Chat system
+//  Chat system
 const showChat = ref(false);
 const comment = ref("");
 const comments = ref(JSON.parse(localStorage.getItem("userMessages")) || []);
@@ -271,8 +271,8 @@ function backToFAQs() {
 <style scoped>
 .news-ticker {
   width: 100%;
-  background-color: skyblue;
-  color: navy;
+  background-color: rgb(160, 236, 236);
+  color: rgb(4, 58, 71);
   font-weight: bold;
   font-size: 18px;
   padding: 8px 0;
@@ -292,7 +292,7 @@ function backToFAQs() {
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
 }
 
-/* 🌈 Social Media Icon Hover Effects */
+/*  Social Media Icon Hover Effects */
 .social-btn {
   transition: transform 0.3s, color 0.3s, background-color 0.3s;
 }

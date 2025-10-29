@@ -30,14 +30,14 @@ const grandTotal = computed(() => {
   )
 })
 
-// ✅ Handle purchase confirmation
+//  Handle purchase confirmation
 const confirmPurchase = () => {
   if (orders.value.length === 0) return
 
-  // 🔔 Here you would integrate real payment (e.g., MPesa STK Push, Stripe, etc.)
+  //  Here you would integrate real payment (e.g., MPesa STK Push, Stripe, etc.)
   alert(`Purchase confirmed! Total: Ksh ${grandTotal.value}\nThank you for your order!`)
 
-  // 🧹 Clear cart after purchase
+  // Clear cart after purchase
   localStorage.removeItem('order')
   orders.value = []
 
@@ -59,7 +59,7 @@ const confirmPurchase = () => {
           @click="dialog = true"
           :disabled="grandTotal <= 0"
         >
-           💳 Purchase Now
+            Purchase Now
         </v-btn>
       </v-col>
     </v-row>

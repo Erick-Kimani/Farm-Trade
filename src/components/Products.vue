@@ -9,7 +9,7 @@ const store = useProductsStore()
 
 // Fetch products from the store
 const products = ref([])
-const searchQuery = ref('') // 🔍 Holds user input for search
+const searchQuery = ref('') //  Holds user input for search
 
 onMounted(() => {
   products.value = store.products
@@ -39,7 +39,7 @@ function viewDetails(product) {
       Our Products
     </h1>
 
-    <!-- 🔍 Search Bar -->
+    <!--  Search Bar -->
     <v-text-field
       v-model="searchQuery"
       label="Search for a product..."
@@ -76,7 +76,7 @@ function viewDetails(product) {
         </v-card>
       </v-col>
 
-      <!-- 🧭 Message for no results -->
+      <!-- Message for no results -->
       <v-col v-if="filteredProducts.length === 0" cols="12" class="text-center">
         <p class="text-gray-600 mt-4">
           No products found matching "<strong>{{ searchQuery }}</strong>"

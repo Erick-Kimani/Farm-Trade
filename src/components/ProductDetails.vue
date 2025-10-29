@@ -6,36 +6,36 @@ import { useProductsStore } from '@/stores/Products'
 const router = useRouter()
 const store = useProductsStore()
 
-// ✅ Access selected product
+//  Access selected product
 const product = computed(() => store.selectedProduct)
 
-// ⭐ Rating value
+//  Rating value
 const rating = ref(0)
 
-// 🧮 Quantity (minimum = 1)
+//  Quantity (minimum = 1)
 const quantity = ref(1)
 
-// 🔙 Go back to products list
+//  Go back to products list
 function goBack() {
   router.push('/products')
 }
 
-// ⭐ Handle star click
+// Handle star click
 function setRating(value) {
   rating.value = value
 }
 
-// ➕ Increase quantity
+//  Increase quantity
 function increaseQuantity() {
   quantity.value++
 }
 
-// ➖ Decrease quantity (minimum 1)
+//  Decrease quantity (minimum 1)
 function decreaseQuantity() {
   if (quantity.value > 1) quantity.value--
 }
 
-// 💰 Clean numeric price extraction
+//  Clean numeric price extraction
 const numericPrice = computed(() => {
   if (!product.value?.price) return 0
   // Extract digits from "325/ kg", "500 ksh", etc.
@@ -44,12 +44,12 @@ const numericPrice = computed(() => {
   return isNaN(num) ? 0 : num
 })
 
-// 💰 Calculate total price
+//  Calculate total price
 const totalPrice = computed(() => {
   return numericPrice.value * Number(quantity.value)
 })
 
-// ✅ Add product to Orders and navigate to Orders page
+//  Add product to Orders and navigate to Orders page
 function placeOrder() {
   if (!product.value) return alert('No product selected!')
 
@@ -64,7 +64,7 @@ function placeOrder() {
   existingOrders.push(newOrder)
   localStorage.setItem('order', JSON.stringify(existingOrders))
 
-  alert(`✅ "${product.value.name}" (x${quantity.value}) added to your orders!`)
+  alert(` "${product.value.name}" (x${quantity.value}) added to your orders!`)
   router.push('/orders')
 }
 </script>
@@ -87,7 +87,7 @@ function placeOrder() {
       <h2 class="text-2xl font-bold mb-3 text-primary">{{ product.name }}</h2>
       <p class="text-gray-700 mb-4">{{ product.description }}</p>
 
-      <!-- ⭐ Rating Section -->
+      <!--  Rating Section -->
       <div class="flex items-center mb-6">
         <span class="mr-2 font-semibold text-gray-700">Rate this Product:</span>
         <div class="stars">
@@ -103,7 +103,7 @@ function placeOrder() {
         </div>
       </div>
 
-      <!-- 🧮 Quantity Selector -->
+      <!--  Quantity Selector -->
       <div class="flex items-center mb-6 justify-between">
         <span class="font-semibold text-gray-700">Select Quantity:</span>
         <div class="flex items-center">
@@ -118,7 +118,7 @@ function placeOrder() {
         </div>
       </div>
 
-      <!-- 💰 Price Summary -->
+      <!--  Price Summary -->
       <div class="flex items-center justify-between mt-4 mb-4">
         <span class="text-xl font-semibold text-primary">
           Unit Price: Ksh {{ numericPrice }} / kg
@@ -128,7 +128,7 @@ function placeOrder() {
         </span>
       </div>
 
-      <!-- 🛒 Add to cart Button -->
+      <!--  Add to cart Button -->
       <div class="text-center mt-6">
         <v-btn color="indigo" @click="placeOrder">
           🛒 Add to cart
@@ -157,7 +157,7 @@ function placeOrder() {
   color: #007bff;
 }
 
-/* ⭐ Rating styles */
+/* Rating styles */
 .stars {
   display: flex;
   cursor: pointer;
@@ -174,7 +174,7 @@ function placeOrder() {
   color: #e52b0a;
 }
 
-/* 🧮 Quantity input styles */
+/*  Quantity input styles */
 .quantity-input {
   width: 60px;
   text-align: center;

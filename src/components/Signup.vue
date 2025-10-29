@@ -14,9 +14,8 @@ const showPassword = ref(false);
 const showConfirmPassword = ref(false);
 const avatar = ref(null);
 const avatarFile = ref(null);
-const showSettings = ref(false); // 👈 Toggle for dropdown visibility
 
-// 📸 Handle avatar image upload
+//  Handle avatar image upload
 function handleAvatarUpload(event) {
   const file = event.target.files[0];
   if (file) {
@@ -43,7 +42,7 @@ function signUp() {
     deliveryAddress: delivery_address.value,
     password: password.value,
     initials: initials,
-    role: "Customer,farmer",
+    role: "Customer",
     activeAccount: true,
     avatar: avatar.value || null,
   };
@@ -59,17 +58,12 @@ function signUp() {
     alert("Error creating your account. Please try again.");
   }
 }
-
-// ⚙️ Navigate to settings
-function goToSettings() {
-  router.push("/settings");
-}
 </script>
 
 <template>
   <v-container class="signup-container" fluid>
     <div class="split-bg">
-      <!-- 🟦 Left Blue Section -->
+      <!-- Left Blue Section -->
       <div class="blue-section">
         <h2 class="welcome-text">Create Your Account</h2>
 
@@ -165,7 +159,7 @@ function goToSettings() {
         </v-card>
       </div>
 
-      <!-- 🟫 Right Beige Section -->
+      <!--  Right Beige Section -->
       <div class="beige-section">
         <div class="beige-text-container">
           <h1 class="right-welcome-text">Welcome to the SignUp Page</h1>
@@ -174,7 +168,7 @@ function goToSettings() {
             and fresh produce suppliers.
           </p>
 
-          <!-- 🧑‍🦱 Avatar Upload -->
+          <!--  Avatar Upload -->
           <div class="avatar-container">
             <div class="avatar-preview">
               <img
@@ -198,31 +192,6 @@ function goToSettings() {
                 class="file-input"
               />
             </label>
-
-            <!-- ⚙️ Settings Icon -->
-            <div
-              class="settings-icon-container"
-              @mouseenter="showSettings = true"
-              @mouseleave="showSettings = false"
-            >
-              <v-icon size="40" color="#6e4c2a" class="settings-icon">
-                mdi-cog-outline
-              </v-icon>
-              <p class="settings-text">Settings</p>
-
-              <!-- ⚙️ Settings Dropdown Menu -->
-              <transition name="fade">
-                <ul v-if="showSettings" class="settings-menu">
-                  <li @click="goToSettings">Open Settings</li>
-                  <li>Toggle Dark Mode</li>
-                  <li>Change Password</li>
-                  <li>Notification Preferences</li>
-                  <li>Language</li>
-                  <li>Help Center</li>
-                  <li>Logout</li>
-                </ul>
-              </transition>
-            </div>
           </div>
         </div>
       </div>
@@ -233,7 +202,7 @@ function goToSettings() {
 <style scoped>
 .signup-container {
   height: 160vh;
-  width: 100vw;
+  width: 110vw;
   overflow: hidden;
   display: flex;
   align-items: stretch;
@@ -247,7 +216,7 @@ function goToSettings() {
     135deg,
     #0d1011 0%,
     #215164 54%,
-    #edc08d 50%,
+    #edc08d 49%,
     #f4c998 100%
   );
 }
@@ -341,68 +310,18 @@ function goToSettings() {
   display: none;
 }
 
-/* ⚙️ Settings Dropdown */
-.settings-icon-container {
-  margin-top: 1.5rem;
-  position: relative;
-  text-align: center;
-  cursor: pointer;
-}
-
-.settings-menu {
-  list-style: none;
-  position: absolute;
-  top: 60px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #f3e3c3;
-  border-radius: 15px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
-  padding: 10px 0;
-  width: 200px;
-  z-index: 10;
-}
-
-.settings-menu li {
-  padding: 10px;
-  color: #3d2506;
-  font-weight: 600;
-  transition: all 0.3s;
-}
-
-.settings-menu li:hover {
-  background-color: #d9c59a;
-  cursor: pointer;
-}
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.3s ease;
-}
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-
-.settings-text {
-  margin-top: 5px;
-  color: #3d2506;
-  font-weight: 600;
-}
-
 /* Glass Card */
 .glass-card {
   width: 380px;
   background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(10px);
   border-radius: 60px;
-  border:15px solid rgba(255, 255, 255, 0.3);
+  border: 15px solid rgba(255, 255, 255, 0.3);
   box-shadow: 0 8px 32px rgba(60, 60, 60, 0.3);
   color: white;
   position: relative;
   z-index: 10;
   margin-bottom: 40px;
-  
 }
 
 /* Signup Button */

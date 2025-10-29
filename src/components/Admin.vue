@@ -1,12 +1,12 @@
 <template>
   <v-app :theme="isDark ? 'dark' : 'light'">
-    <!-- ✅ Top App Bar -->
+    <!-- Top App Bar -->
     <v-app-bar color="primary" dark>
       <v-app-bar-nav-icon @click="drawer = !drawer" />
       <v-toolbar-title>Admin Dashboard</v-toolbar-title>
     </v-app-bar>
 
-    <!-- ✅ Sidebar Drawer -->
+    <!-- Sidebar Drawer -->
     <v-navigation-drawer
       v-model="drawer"
       :rail="rail"
@@ -15,7 +15,7 @@
       @mouseenter="rail = false"
       @mouseleave="rail = true"
     >
-      <!-- 🧑‍💼 Avatar -->
+      <!--  Avatar -->
       <v-list>
         <v-list-item>
           <div
@@ -36,7 +36,7 @@
 
       <v-divider></v-divider>
 
-      <!-- ✅ Navigation -->
+      <!--  Navigation -->
       <v-list density="compact" nav>
         <v-list-item prepend-icon="mdi-home" title="Home" value="home" />
         <v-list-item prepend-icon="mdi-account" title="My Account" value="account" />
@@ -48,12 +48,12 @@
           @click="toggleMessages"
         />
         <v-divider class="my-2"></v-divider>
-        <!-- ⚙️ Settings -->
+        <!--  Settings -->
         <v-list-item prepend-icon="mdi-cog" title="Settings" value="settings" @click="showSettings = true" />
       </v-list>
     </v-navigation-drawer>
 
-    <!-- ✅ Main Admin Page -->
+    <!--  Main Admin Page -->
     <v-main class="pa-6">
       <v-container
         fluid
@@ -94,11 +94,11 @@
         </v-sheet>
       </v-container>
 
-      <!-- 💬 Messages Dialog -->
+      <!--  Messages Dialog -->
       <v-dialog v-model="showMessages" max-width="550">
         <v-card>
           <v-card-title class="d-flex justify-space-between align-center">
-            <span>📨 User Messages</span>
+            <span> User Messages</span>
             <v-icon color="red" @click="showMessages = false">mdi-close</v-icon>
           </v-card-title>
 
@@ -117,7 +117,7 @@
                     <strong>{{ msg.from === 'user' ? msg.senderName : 'Admin' }}:</strong>
                     {{ msg.text }}
                   </p>
-                  <small class="text-grey">🕒 {{ msg.timestamp }}</small>
+                  <small class="text-grey"> {{ msg.timestamp }}</small>
                 </div>
 
                 <v-btn icon color="red-darken-1" size="small" variant="text" @click="deleteMessage(index)">
@@ -146,11 +146,11 @@
         </v-card>
       </v-dialog>
 
-      <!-- ⚙️ Settings Dialog -->
+      <!-- Settings Dialog -->
       <v-dialog v-model="showSettings" max-width="480">
         <v-card>
           <v-card-title class="d-flex justify-space-between align-center">
-            <span>⚙️ App Settings</span>
+            <span> App Settings</span>
             <v-icon color="red" @click="showSettings = false">mdi-close</v-icon>
           </v-card-title>
           <v-divider></v-divider>
@@ -200,7 +200,7 @@
         </v-card>
       </v-dialog>
 
-      <!-- 🆕 Add/Edit User Dialog -->
+      <!-- Add/Edit User Dialog -->
       <v-dialog v-model="showAddDialog" max-width="500">
         <v-card>
           <v-card-title>
@@ -247,6 +247,19 @@ const lastBackup = ref(null);
 const users = ref([
   { id: 1, name: "John Mwangi", phone: "0712345678", email: "john@example.com", role: "Farmer", active: true },
   { id: 2, name: "Mary Wanjiku", phone: "0798765432", email: "mary@example.com", role: "Customer", active: false },
+  { id: 3, name: "Harry Mephis", phone: "0712345566", email: "mephis@example.com", role: "Farmer", active: true },
+  { id: 4, name: "Jack Muhindi", phone: "0712345776", email: "jack@example.com", role: "Customer", active: false },
+  { id: 5, name: "Mary Wandia", phone: "0712785776", email: "mary@example.com", role: "Customer", active: true },
+  { id: 6, name: "Allan Muiki", phone: "0712345776", email: "allan@example.com", role: "Customer", active: false},
+  { id: 7, name: "Baraka Stanely", phone: "0712245996", email: "baraka@example.com", role: "Customer", active: true },
+  { id: 8, name: "Martin Shukrani", phone: "0731345276", email: "martin@example.com", role: "Customer", active: true },
+  { id: 9, name: "Sunday Aleko", phone: "0712345886", email: "aleko@example.com", role: "Customer", active: false},
+  { id: 10, name: "Alex Kamashu", phone: "0712345116", email: "alex@example.com", role: "Customer", active: true },
+  { id: 11, name: "Ryan Kambua", phone: "0712345886", email: "kambua@example.com", role: "Customer", active: false },
+  { id: 12, name: "Miriam Wanjiku", phone: "0712345996", email: "wanjiku@example.com", role: "Customer", active: true },
+  { id: 13, name: "Raphael Njoroge", phone: "0712345779", email: "njoroge@example.com", role: "Customer", active: true },
+  
+  
 ]);
 
 const newUser = ref({
@@ -267,7 +280,7 @@ const headers = [
   { title: "Actions", key: "actions" },
 ];
 
-// 📨 Messages
+//  Messages
 function loadMessages() {
   userMessages.value = JSON.parse(localStorage.getItem("userMessages")) || [];
 }
@@ -289,7 +302,7 @@ function sendReply() {
   replyText.value = "";
 }
 
-// 👥 Users
+//  Users
 function toggleStatus(user) {
   user.active = !user.active;
 }
@@ -318,13 +331,13 @@ function removeUser(user) {
   if (confirm(`Remove ${user.name}?`)) users.value = users.value.filter((u) => u.id !== user.id);
 }
 
-// ⚙️ Settings Operations
+//  Settings Operations
 function resetApp() {
   if (confirm("This will delete all app data. Continue?")) {
     localStorage.clear();
     users.value = [];
     userMessages.value = [];
-    alert("✅ App data reset successfully!");
+    alert(" App data reset successfully!");
   }
 }
 function backupData() {
@@ -334,14 +347,14 @@ function backupData() {
   };
   localStorage.setItem("appBackup", JSON.stringify(data));
   lastBackup.value = new Date().toLocaleString();
-  alert("💾 Backup completed!");
+  alert(" Backup completed!");
 }
 function restoreData() {
   const backup = JSON.parse(localStorage.getItem("appBackup"));
   if (!backup) return alert("No backup found!");
   users.value = backup.users || [];
   userMessages.value = backup.messages || [];
-  alert("✅ Data restored!");
+  alert(" Data restored!");
 }
 
 onMounted(() => loadMessages());

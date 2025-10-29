@@ -10,7 +10,7 @@ const isLoggedIn = ref(true);
 const isAdmin = ref(false);
 const userInitials = ref("");
 
-// 🧠 Load user info
+//  Load user info
 onMounted(() => {
   const storedUser = JSON.parse(localStorage.getItem("user"));
   if (storedUser) {
@@ -45,13 +45,13 @@ const isActive = (path) => computed(() => route.path === path);
   <v-app-bar color="deep-orange-lighten-2" dark flat elevate-on-scroll>
     <v-container class="d-flex align-center justify-space-between">
 
-      <!-- 🌾 Logo + Title -->
+      <!--  Logo + Title -->
       <div class="d-flex align-center logo-title cursor-pointer" @click="goTo('/')">
         <v-icon color="white" size="35" class="mr-2">mdi-sprout</v-icon>
         <h2 class="mb-0 text-h5 font-weight-bold text-white">FarmTrade Hub</h2>
       </div>
 
-      <!-- 🔗 Navbar Links -->
+      <!--  Navbar Links -->
       <div class="nav-links d-flex align-center">
         <v-btn
           text
@@ -98,7 +98,7 @@ const isActive = (path) => computed(() => route.path === path);
         >Admin</v-btn>
       </div>
 
-      <!-- 👤 Avatar Dropdown -->
+      <!-- Avatar Dropdown -->
       <div class="d-flex align-center">
         <v-menu v-model="showMenu" location="bottom end">
           <template #activator="{ props }">
@@ -144,7 +144,7 @@ const isActive = (path) => computed(() => route.path === path);
   transform: scale(1.05);
 }
 
-/* 🌟 Navbar Buttons */
+/*  Navbar Buttons */
 .nav-links .nav-btn {
   text-transform: none;
   font-weight: 500;
@@ -157,7 +157,7 @@ const isActive = (path) => computed(() => route.path === path);
   background-color: transparent;
 }
 
-/* ✨ Hover effect */
+/*  Hover effect */
 .nav-links .nav-btn:hover {
   background: rgba(255, 255, 255, 0.15);
 }
@@ -171,12 +171,12 @@ const isActive = (path) => computed(() => route.path === path);
   transform: translateY(-2px);
 }
 
-/* ✨ Smooth transition when switching pages */
+/*  Smooth transition when switching pages */
 .nav-links .nav-btn.active {
   transition: background 0.4s ease, box-shadow 0.4s ease, transform 0.3s ease;
 }
 
-/* 🪶 Responsive */
+/*  Responsive */
 @media (max-width: 768px) {
   .nav-links {
     display: none;
