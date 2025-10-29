@@ -6,6 +6,7 @@ const router = useRouter()
 const orders = ref([])
 const dialog = ref(false) // controls confirmation dialog
 
+// Load orders from localStorage on mount
 onMounted(() => {
   const storedOrders = JSON.parse(localStorage.getItem('order')) || []
   orders.value = storedOrders.map(order => ({
@@ -18,11 +19,13 @@ onMounted(() => {
   }))
 })
 
+// Remove an order
 const removeOrder = (index) => {
   orders.value.splice(index, 1)
   localStorage.setItem('order', JSON.stringify(orders.value))
 }
 
+// Compute grand total
 const grandTotal = computed(() => {
   return orders.value.reduce(
     (sum, order) => sum + order.quantity * order.product.price,
@@ -30,19 +33,23 @@ const grandTotal = computed(() => {
   )
 })
 
-//  Handle purchase confirmation
+// Handle purchase confirmation
 const confirmPurchase = () => {
   if (orders.value.length === 0) return
 
-  //  Here you would integrate real payment (e.g., MPesa STK Push, Stripe, etc.)
   alert(`Purchase confirmed! Total: Ksh ${grandTotal.value}\nThank you for your order!`)
 
   // Clear cart after purchase
   localStorage.removeItem('order')
   orders.value = []
 
-  // Optional: Navigate to success page
-  // router.push('/order-success')
+  // Optional: Navigate to Delivery page after confirming purchase
+  router.push('/delivery')
+}
+
+// Navigate manually to Delivery page
+const goToDelivery = () => {
+  router.push('/delivery')
 }
 </script>
 
@@ -50,16 +57,26 @@ const confirmPurchase = () => {
   <v-container>
     <h1 class="text-center text-3xl font-bold text-primary mb-6">🛒 My Cart</h1>
 
-    <!-- Purchase Button -->
+    <!-- Action Buttons -->
     <v-row v-if="orders.length > 0">
-      <v-col cols="12" class="text-right">
+      <v-col cols="12" class="flex justify-end gap-4 mb-4">
+        <!-- Purchase Now -->
         <v-btn
           color="green-darken-2"
-          class="mb-4 px-6"
+          class="px-6"
           @click="dialog = true"
           :disabled="grandTotal <= 0"
         >
-            Purchase Now
+          Purchase Now
+        </v-btn>
+
+        <!-- Go to Delivery -->
+        <v-btn
+          color="blue-darken-2"
+          class="px-6"
+          @click="goToDelivery"
+        >
+          Go to Delivery
         </v-btn>
       </v-col>
     </v-row>
@@ -69,7 +86,8 @@ const confirmPurchase = () => {
       <v-card>
         <v-card-title class="text-h6">Confirm Purchase</v-card-title>
         <v-card-text>
-          Are you sure you want to purchase all items for <strong>Ksh {{ grandTotal }}</strong>?
+          Are you sure you want to purchase all items for
+          <strong>Ksh {{ grandTotal }}</strong>?
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -87,13 +105,17 @@ const confirmPurchase = () => {
         cols="12"
         md="6"
       >
-        <v-card border="opacity-50 sm lime" variant="elevated" class="mx-auto pa-3 mb-4">
+        <v-card
+          border="opacity-50 sm lime"
+          variant="elevated"
+          class="mx-auto pa-3 mb-4"
+        >
           <v-row>
             <v-col md="4">
               <v-img
                 :src="order.product.image"
                 width="170px"
-                height="17y0px"
+                height="170px"
                 class="rounded-lg"
                 cover
               ></v-img>
@@ -113,6 +135,7 @@ const confirmPurchase = () => {
                   <div class="text-h6 font-semibold mt-2">
                     Total: Ksh {{ order.quantity * order.product.price }}
                   </div>
+
                   <v-btn
                     color="red-darken-2"
                     size="small"
@@ -160,5 +183,14 @@ const confirmPurchase = () => {
 }
 .font-semibold {
   font-weight: 600;
+}
+.flex {
+  display: flex;
+}
+.justify-end {
+  justify-content: flex-end;
+}
+.gap-4 {
+  gap: 1rem;
 }
 </style>

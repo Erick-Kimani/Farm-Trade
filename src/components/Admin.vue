@@ -1,12 +1,12 @@
 <template>
   <v-app :theme="isDark ? 'dark' : 'light'">
-    <!-- Top App Bar -->
+    <!-- ✅ Top App Bar -->
     <v-app-bar color="primary" dark>
       <v-app-bar-nav-icon @click="drawer = !drawer" />
       <v-toolbar-title>Admin Dashboard</v-toolbar-title>
     </v-app-bar>
 
-    <!-- Sidebar Drawer -->
+    <!-- ✅ Sidebar Drawer -->
     <v-navigation-drawer
       v-model="drawer"
       :rail="rail"
@@ -15,7 +15,7 @@
       @mouseenter="rail = false"
       @mouseleave="rail = true"
     >
-      <!--  Avatar -->
+      <!-- Avatar Section -->
       <v-list>
         <v-list-item>
           <div
@@ -36,11 +36,26 @@
 
       <v-divider></v-divider>
 
-      <!--  Navigation -->
+      <!-- ✅ Navigation -->
       <v-list density="compact" nav>
-        <v-list-item prepend-icon="mdi-home" title="Home" value="home" />
-        <v-list-item prepend-icon="mdi-account" title="My Account" value="account" />
-        <v-list-item prepend-icon="mdi-account-group-outline" title="Users" value="users" />
+        <v-list-item
+          prepend-icon="mdi-home"
+          title="Home"
+          value="home"
+          @click="activeSection = 'home'"
+        />
+        <v-list-item
+          prepend-icon="mdi-account"
+          title="My Account"
+          value="account"
+          @click="activeSection = 'account'"
+        />
+        <v-list-item
+          prepend-icon="mdi-account-group-outline"
+          title="Users"
+          value="users"
+          @click="activeSection = 'users'"
+        />
         <v-list-item
           prepend-icon="mdi-message-text-outline"
           title="Messages"
@@ -48,36 +63,58 @@
           @click="toggleMessages"
         />
         <v-divider class="my-2"></v-divider>
-        <!--  Settings -->
-        <v-list-item prepend-icon="mdi-cog" title="Settings" value="settings" @click="showSettings = true" />
+        <v-list-item
+          prepend-icon="mdi-cog"
+          title="Settings"
+          value="settings"
+          @click="showSettings = true"
+        />
       </v-list>
     </v-navigation-drawer>
 
-    <!--  Main Admin Page -->
+    <!-- ✅ Main Content -->
     <v-main class="pa-6">
       <v-container
         fluid
         class="pa-6"
         style="background: linear-gradient(135deg, #f0f4ff, #e0ecff); border-radius: 16px;"
       >
-        <v-sheet border rounded elevation="4" class="pa-4">
+        <!-- ✅ Users Section (Visible only when selected) -->
+        <v-sheet
+          v-if="activeSection === 'users'"
+          border
+          rounded
+          elevation="4"
+          class="pa-4"
+        >
           <v-data-table :headers="headers" :items="users">
             <template #top>
               <v-toolbar flat>
                 <v-toolbar-title>User Management</v-toolbar-title>
                 <v-spacer></v-spacer>
-                <v-btn prepend-icon="mdi-plus" rounded="lg" text="Add User" @click="showAddDialog = true"></v-btn>
+                <v-btn
+                  prepend-icon="mdi-plus"
+                  rounded="lg"
+                  text="Add User"
+                  @click="showAddDialog = true"
+                ></v-btn>
               </v-toolbar>
             </template>
 
             <template #item.role="{ value }">
-              <v-chip :color="value === 'Farmer' ? 'green-lighten-2' : 'blue-lighten-3'" label>
+              <v-chip
+                :color="value === 'Farmer' ? 'green-lighten-2' : 'blue-lighten-3'"
+                label
+              >
                 {{ value }}
               </v-chip>
             </template>
 
             <template #item.status="{ item }">
-              <v-btn :color="item.active ? 'green' : 'red'" @click="toggleStatus(item)">
+              <v-btn
+                :color="item.active ? 'green' : 'red'"
+                @click="toggleStatus(item)"
+              >
                 {{ item.active ? 'Deactivate' : 'Activate' }}
               </v-btn>
             </template>
@@ -92,9 +129,32 @@
             </template>
           </v-data-table>
         </v-sheet>
+
+        <!-- ✅ Optional placeholder when no section selected -->
+        <v-sheet
+          v-else-if="activeSection === 'home'"
+          elevation="2"
+          rounded
+          class="pa-6 text-center"
+        >
+          <v-icon size="64" color="primary">mdi-home</v-icon>
+          <h2 class="mt-3">Welcome to the Admin Dashboard</h2>
+          <p>Use the sidebar to manage users, messages, and settings.</p>
+        </v-sheet>
+
+        <v-sheet
+          v-else-if="activeSection === 'account'"
+          elevation="2"
+          rounded
+          class="pa-6 text-center"
+        >
+          <v-icon size="64" color="primary">mdi-account</v-icon>
+          <h2 class="mt-3">My Account</h2>
+          <p>Admin account information and preferences will appear here.</p>
+        </v-sheet>
       </v-container>
 
-      <!--  Messages Dialog -->
+      <!-- ✅ Messages Dialog -->
       <v-dialog v-model="showMessages" max-width="550">
         <v-card>
           <v-card-title class="d-flex justify-space-between align-center">
@@ -110,17 +170,28 @@
                 v-for="(msg, index) in userMessages"
                 :key="index"
                 class="mb-3 pa-2 rounded-lg d-flex justify-space-between align-start"
-                :style="{ backgroundColor: msg.from === 'user' ? '#e0f7fa' : '#f1f8e9' }"
+                :style="{
+                  backgroundColor:
+                    msg.from === 'user' ? '#e0f7fa' : '#f1f8e9',
+                }"
               >
                 <div style="flex-grow: 1; padding-right: 8px;">
                   <p class="mb-1">
-                    <strong>{{ msg.from === 'user' ? msg.senderName : 'Admin' }}:</strong>
+                    <strong>{{
+                      msg.from === 'user' ? msg.senderName : 'Admin'
+                    }}:</strong>
                     {{ msg.text }}
                   </p>
                   <small class="text-grey"> {{ msg.timestamp }}</small>
                 </div>
 
-                <v-btn icon color="red-darken-1" size="small" variant="text" @click="deleteMessage(index)">
+                <v-btn
+                  icon
+                  color="red-darken-1"
+                  size="small"
+                  variant="text"
+                  @click="deleteMessage(index)"
+                >
                   <v-icon>mdi-delete</v-icon>
                 </v-btn>
               </div>
@@ -139,14 +210,19 @@
               hide-details
               class="flex-grow-1"
             ></v-text-field>
-            <v-btn color="primary" variant="elevated" @click="sendReply" :disabled="!replyText.trim()">
+            <v-btn
+              color="primary"
+              variant="elevated"
+              @click="sendReply"
+              :disabled="!replyText.trim()"
+            >
               Send
             </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
 
-      <!-- Settings Dialog -->
+      <!-- ✅ Settings Dialog -->
       <v-dialog v-model="showSettings" max-width="480">
         <v-card>
           <v-card-title class="d-flex justify-space-between align-center">
@@ -156,7 +232,6 @@
           <v-divider></v-divider>
 
           <v-card-text>
-            <!-- Theme Toggle -->
             <v-switch
               v-model="isDark"
               inset
@@ -165,7 +240,6 @@
               class="my-3"
             ></v-switch>
 
-            <!-- Notifications -->
             <v-switch
               v-model="notificationsEnabled"
               inset
@@ -174,7 +248,6 @@
               class="my-3"
             ></v-switch>
 
-            <!-- Backup / Restore -->
             <v-btn block color="green-darken-1" class="mb-3" @click="backupData">
               <v-icon start>mdi-content-save</v-icon> Backup App Data
             </v-btn>
@@ -183,28 +256,26 @@
               <v-icon start>mdi-restore</v-icon> Restore Data
             </v-btn>
 
-            <!-- Reset -->
             <v-btn block color="red-darken-2" @click="resetApp">
               <v-icon start>mdi-delete-alert</v-icon> Reset All Data
             </v-btn>
 
-            <!-- System Info -->
             <v-divider class="my-3"></v-divider>
             <p><strong>System Info:</strong></p>
             <ul>
               <li>Version: 1.2.0</li>
               <li>Environment: Production</li>
-              <li>Last Backup: {{ lastBackup || 'None' }}</li>
+              <li>Last Backup: {{ lastBackup || "None" }}</li>
             </ul>
           </v-card-text>
         </v-card>
       </v-dialog>
 
-      <!-- Add/Edit User Dialog -->
+      <!-- ✅ Add/Edit User Dialog -->
       <v-dialog v-model="showAddDialog" max-width="500">
         <v-card>
           <v-card-title>
-            {{ editingUser ? 'Edit User' : 'Add New User' }}
+            {{ editingUser ? "Edit User" : "Add New User" }}
           </v-card-title>
           <v-card-text>
             <v-text-field v-model="newUser.name" label="Full Name"></v-text-field>
@@ -220,7 +291,7 @@
             <v-spacer></v-spacer>
             <v-btn color="red" text @click="closeAddDialog">Cancel</v-btn>
             <v-btn color="green" text @click="saveUser">
-              {{ editingUser ? 'Save Changes' : 'Add User' }}
+              {{ editingUser ? "Save Changes" : "Add User" }}
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -234,6 +305,8 @@ import { ref, onMounted } from "vue";
 
 const drawer = ref(true);
 const rail = ref(true);
+const activeSection = ref("home"); // ✅ Controls which section is shown
+
 const showMessages = ref(false);
 const showAddDialog = ref(false);
 const editingUser = ref(false);
@@ -247,19 +320,6 @@ const lastBackup = ref(null);
 const users = ref([
   { id: 1, name: "John Mwangi", phone: "0712345678", email: "john@example.com", role: "Farmer", active: true },
   { id: 2, name: "Mary Wanjiku", phone: "0798765432", email: "mary@example.com", role: "Customer", active: false },
-  { id: 3, name: "Harry Mephis", phone: "0712345566", email: "mephis@example.com", role: "Farmer", active: true },
-  { id: 4, name: "Jack Muhindi", phone: "0712345776", email: "jack@example.com", role: "Customer", active: false },
-  { id: 5, name: "Mary Wandia", phone: "0712785776", email: "mary@example.com", role: "Customer", active: true },
-  { id: 6, name: "Allan Muiki", phone: "0712345776", email: "allan@example.com", role: "Customer", active: false},
-  { id: 7, name: "Baraka Stanely", phone: "0712245996", email: "baraka@example.com", role: "Customer", active: true },
-  { id: 8, name: "Martin Shukrani", phone: "0731345276", email: "martin@example.com", role: "Customer", active: true },
-  { id: 9, name: "Sunday Aleko", phone: "0712345886", email: "aleko@example.com", role: "Customer", active: false},
-  { id: 10, name: "Alex Kamashu", phone: "0712345116", email: "alex@example.com", role: "Customer", active: true },
-  { id: 11, name: "Ryan Kambua", phone: "0712345886", email: "kambua@example.com", role: "Customer", active: false },
-  { id: 12, name: "Miriam Wanjiku", phone: "0712345996", email: "wanjiku@example.com", role: "Customer", active: true },
-  { id: 13, name: "Raphael Njoroge", phone: "0712345779", email: "njoroge@example.com", role: "Customer", active: true },
-  
-  
 ]);
 
 const newUser = ref({
@@ -280,7 +340,7 @@ const headers = [
   { title: "Actions", key: "actions" },
 ];
 
-//  Messages
+// ✅ Message functions
 function loadMessages() {
   userMessages.value = JSON.parse(localStorage.getItem("userMessages")) || [];
 }
@@ -302,12 +362,13 @@ function sendReply() {
   replyText.value = "";
 }
 
-//  Users
+// ✅ User Management
 function toggleStatus(user) {
   user.active = !user.active;
 }
 function saveUser() {
-  if (!newUser.value.name || !newUser.value.email || !newUser.value.role) return alert("Fill all fields.");
+  if (!newUser.value.name || !newUser.value.email || !newUser.value.role)
+    return alert("Fill all fields.");
   if (editingUser.value) {
     const i = users.value.findIndex((u) => u.id === newUser.value.id);
     if (i !== -1) users.value[i] = { ...newUser.value };
@@ -328,16 +389,17 @@ function editUser(user) {
   showAddDialog.value = true;
 }
 function removeUser(user) {
-  if (confirm(`Remove ${user.name}?`)) users.value = users.value.filter((u) => u.id !== user.id);
+  if (confirm(`Remove ${user.name}?`))
+    users.value = users.value.filter((u) => u.id !== user.id);
 }
 
-//  Settings Operations
+// ✅ Settings Operations
 function resetApp() {
   if (confirm("This will delete all app data. Continue?")) {
     localStorage.clear();
     users.value = [];
     userMessages.value = [];
-    alert(" App data reset successfully!");
+    alert("App data reset successfully!");
   }
 }
 function backupData() {
@@ -347,14 +409,14 @@ function backupData() {
   };
   localStorage.setItem("appBackup", JSON.stringify(data));
   lastBackup.value = new Date().toLocaleString();
-  alert(" Backup completed!");
+  alert("Backup completed!");
 }
 function restoreData() {
   const backup = JSON.parse(localStorage.getItem("appBackup"));
   if (!backup) return alert("No backup found!");
   users.value = backup.users || [];
   userMessages.value = backup.messages || [];
-  alert(" Data restored!");
+  alert("Data restored!");
 }
 
 onMounted(() => loadMessages());

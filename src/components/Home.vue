@@ -1,12 +1,12 @@
 <template>
-  <!-- ✅ News Ticker -->
+  <!--  News Ticker -->
   <div class="news-ticker">
     <marquee behavior="scroll" direction="left" scrollamount="6">
     <v-icon>mdi-food-variant</v-icon> Welcome to <strong>FarmTrade-Hub</strong> — Bridging farmers and buyers directly for fresh, sustainable produce!
     </marquee>
   </div>
 
-  <!-- 🖼 Hero Section -->
+  <!--  Hero Section -->
   <v-container class="d-flex justify-center align-center" style="height: 90vh;">
     <v-carousel
       :style="{ width: carouselWidth, height: carouselHeight }"
@@ -73,7 +73,7 @@
               target="_blank"
               class="social-btn facebook"
             >
-              <v-icon size="28">mdi-facebook</v-icon>
+              <v-icon size="30">mdi-facebook</v-icon>
             </v-btn>
 
             <v-btn
@@ -83,7 +83,7 @@
               target="_blank"
               class="social-btn twitter"
             >
-              <v-icon size="28">mdi-twitter</v-icon>
+              <v-icon size="30">mdi-twitter</v-icon>
             </v-btn>
 
             <v-btn
@@ -93,7 +93,7 @@
               target="_blank"
               class="social-btn instagram"
             >
-              <v-icon size="28">mdi-instagram</v-icon>
+              <v-icon size="30">mdi-instagram</v-icon>
             </v-btn>
 
             <v-btn
@@ -103,13 +103,13 @@
               target="_blank"
               class="social-btn whatsapp"
             >
-              <v-icon size="28">mdi-whatsapp</v-icon>
+              <v-icon size="30">mdi-whatsapp</v-icon>
             </v-btn>
           </v-card-actions>
         </v-col>
 
         <!--  Terms -->
-        <v-col cols="12" md="4">
+        <v-col cols="12" md="1">
           <TermsAndConditions />
         </v-col>
       </v-row>
@@ -126,7 +126,7 @@
 
   <!--  Floating Chat Icon -->
   <v-btn icon color="teal-darken-3" class="chat-btn" @click="toggleChat" elevation="10">
-    <v-icon size="30">mdi-chat</v-icon>
+    <v-icon size="35">mdi-chat</v-icon>
   </v-btn>
 
   <!-- Chat Box -->
@@ -162,7 +162,7 @@
           <v-divider class="my-2"></v-divider>
         </div>
         <v-btn block color="teal-darken-2" variant="outlined" class="mt-2" @click="backToFAQs">
-          ⬅ Back to FAQs
+           Back to FAQs
         </v-btn>
       </v-card-text>
 
@@ -197,23 +197,19 @@ const viewingFAQ = ref(true);
 const commonQueries = [
   {
     question: "How can I place an order?",
-    answer:
-      "To place an order, go to the Products section, select your desired item, and click 'Order Now'.",
+    answer:"To place an order, go to the Products section, select your desired item, and click 'Order Now'.",
   },
   {
     question: "Do you deliver produce?",
-    answer:
-      "Yes! We deliver across major towns in Kenya. Delivery charges depend on your location.",
+    answer:"Yes! We deliver across major towns in Kenya. Delivery charges depend on your location.",
   },
   {
     question: "Can I sell my farm produce on FarmTrade-Hub?",
-    answer:
-      "Absolutely. Sign up as a farmer, create your product listings, and start selling directly to customers.",
+    answer:"Absolutely. Sign up as a farmer, create your product listings, and start selling directly to customers.",
   },
   {
     question: "How do I contact customer support?",
-    answer:
-      "You can reach us through WhatsApp (+254 791 018 109) or email farmtradehub@gmail.com.",
+    answer:"You can reach us through WhatsApp (+254 791 018 109) or email farmtradehub@gmail.com.",
   },
   {
     question: "What payment methods do you accept?",

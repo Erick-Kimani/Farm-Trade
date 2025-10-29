@@ -7,6 +7,7 @@ import AboutUs from "@/components/AboutUs.vue";
 import Admin from "@/components/Admin.vue";
 import Login from "@/components/Login.vue";
 import Orders from "@/components/Orders.vue";
+import Delivery from "@/components/Delivery.vue"; 
 import Products from "@/components/Products.vue";
 import ProductDetails from "@/components/ProductDetails.vue";
 import Services from "@/components/Services.vue";
@@ -51,6 +52,13 @@ const routes = [
   {path: "/service-details"
     ,name: "servicedetails",
     component: ServiceDetails,},
+
+
+     {path: "/delivery",
+    name: "delivery",
+    component: Delivery,
+    meta: { requiresAuth: true }, // Only logged-in users
+  },
 
   
   {path: "/orders",

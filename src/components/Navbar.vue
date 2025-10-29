@@ -67,6 +67,24 @@ const isActive = (path) => computed(() => route.path === path);
           @click="goTo('/products')"
         >Grocery</v-btn>
 
+         <v-btn
+          v-if="isLoggedIn"
+          text
+          class="nav-btn"
+          :class="{ active: isActive('/orders').value }"
+          @click="goTo('/orders')"
+        >Add to Cart</v-btn>
+
+
+          <v-btn
+          text
+          class="nav-btn"
+          :class="{ active: isActive('/Delivery').value }"
+          @click="goTo('/delivery')"
+        > Delivery</v-btn>
+
+
+
         <v-btn
           text
           class="nav-btn"
@@ -81,13 +99,7 @@ const isActive = (path) => computed(() => route.path === path);
           @click="goTo('/aboutus')"
         >About Us</v-btn>
 
-        <v-btn
-          v-if="isLoggedIn"
-          text
-          class="nav-btn"
-          :class="{ active: isActive('/orders').value }"
-          @click="goTo('/orders')"
-        >Add to Cart</v-btn>
+       
 
         <v-btn
           v-if="isLoggedIn && isAdmin"
